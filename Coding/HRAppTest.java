@@ -35,8 +35,8 @@ public class HRAppTest {
             System.out.println("1. View Your Information");
             System.out.println("2. Write Complaint");
             System.out.println("3. View Sprint Evaluation");
-            System.out.println("4. Update Job Satisfaction"); // New option
-            System.out.println("5. Update Contact Information"); // New option
+            System.out.println("4. Update Job Satisfaction"); 
+            System.out.println("5. Update Contact Information");
 
             if (loggedInEmployee.getJobTitle().equalsIgnoreCase("Supervisor")) {
                 System.out.println("6. Write Sprint Evaluation (Supervisor Only)");
@@ -49,16 +49,16 @@ public class HRAppTest {
             System.out.print("Choose an option: ");
 
             int choice = scanner.nextInt();
-            scanner.nextLine();  // Consume the newline character
+            scanner.nextLine();  
 
             switch (choice) {
                 case 1:
-                    // View logged-in employee's information
+                    
                     viewEmployeeInfo();
                     break;
 
                 case 2:
-                    // File a complaint
+                
                     System.out.print("Enter your complaint: ");
                     String complaint = scanner.nextLine();
                     loggedInEmployee.fileComplaint(complaint);
@@ -70,11 +70,11 @@ public class HRAppTest {
                     break;
 
                 case 4:
-                    // Update Job Satisfaction
+                    
                     updateJobSatisfaction();
                     break;
                 case 5:
-                    // Update Contact Information
+                    
                     updateContactInformation(scanner);
                     break;
 
@@ -94,7 +94,6 @@ public class HRAppTest {
                         System.out.print("Enter Employee ID to view their complaints: ");
                         String inputId = scanner.nextLine().trim();
 
-                        // Call the HR class method to view complaints
                         hr.viewComplaints(inputId);
                     } else {
                         System.out.println("You do not have permission to view complaints.");
@@ -102,7 +101,7 @@ public class HRAppTest {
                     break;
 
                 case 8:
-                    // Exit the application
+                  
                     exit = true;
                     break;
 
@@ -133,7 +132,7 @@ public class HRAppTest {
         return employee;
     }
 
-    // View the logged-in employee's information
+    // View logged-in employee's information
     private static void viewEmployeeInfo() {
         Demographics demographics = loggedInEmployee.getDemographics();
         System.out.println("ID: " + loggedInEmployee.getId());
@@ -152,7 +151,7 @@ public class HRAppTest {
 
         System.out.print("Enter your job satisfaction rating (0-10): ");
         rating = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline
+        scanner.nextLine(); 
         System.out.print("Enter your suggestion: ");
         suggestion = scanner.nextLine();
         System.out.print("Enter your feedback: ");
@@ -162,7 +161,7 @@ public class HRAppTest {
         loggedInEmployee.setJobSatisfaction(sjob);
         System.out.println("Job satisfaction updated to: " + loggedInEmployee.getJobSatisfaction());
 
-        // Save changes to file
+       
         sjob.saveToFile();
     }
 
@@ -217,8 +216,8 @@ public class HRAppTest {
         String evaluation = scanner.nextLine();
         System.out.print("Enter star rating (1-5): ");
         int starRating = scanner.nextInt();
-        scanner.nextLine();  // Consume the newline
-
+        scanner.nextLine(); 
+        
         // Write the evaluation to a file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("SprintEval.txt", true))) {
             writer.write(employeeToEvaluate.getId() + "," + evaluation + "," + starRating);
