@@ -1,0 +1,5 @@
+4530,Kate Denson,White,25,123 Rainbow Rd.,000-0000,Supervisor,HR
+6479,James Sunderland,White,45,123 IDK Rd.,555-6878,Handyman,HR
+456,Jane Ramero,Hispanic,47,145 Road Street,555-6879,Host,Talk Show
+2895,Sheva Alamar,Black,25,234 West Point St.,270-999-99889,Supervisor,HR
+345,Jake Park,Japanese,21,234 East Point St.,270-888-8899,Supervisor,HR
