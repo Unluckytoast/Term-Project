@@ -1,26 +1,25 @@
 import java.io.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JobHistory
 {
     private static final String jobHist = "JobHistory.txt";
-    File job = new File(jobHist);
-
     BufferedReader reader;
     BufferedWriter writer;
     
     //Method to view past jobs of a certain id
-    public List<String> viewPastJob(String id)
+    public List<String> getPastJob(String id)
     {
-        List<String> pastJobs = new ArrayList<String>();
+        List<String> pastJobs = new ArrayList<>();
         try
         {
             reader = new BufferedReader(new FileReader(jobHist));
             String line;
             boolean idFound = false;
 
-            System.out.println("Past Job for user " + id + ":");
             while ((line = reader.readLine()) != null)
             {
                 if(line.contains(id))
@@ -53,7 +52,7 @@ public class JobHistory
     }
 
     //Method to add a past job for a certain id
-    public void addPastJob(String id, String newPastJob, int startTimeJob, int endTimeJob)
+    public void addPastJob(String id, String newPastJob, LocalDate startDate, LocalDate endDate)
     {
         try 
         {
@@ -62,7 +61,10 @@ public class JobHistory
             reader = new BufferedReader(new FileReader(jobHist));
             String line;
             boolean isLineModified = false;
-            int totalTimeInJob = endTimeJob - startTimeJob;
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            String formattedStartDate = startDate.format(formatter);
+            String formattedEndDate = endDate.format(formatter);
 
             while ((line = reader.readLine()) != null) 
             {
@@ -70,15 +72,7 @@ public class JobHistory
                 if (line.contains(id) && !isLineModified) 
                 {
                     // Step 3: Modify the line by appending or prepending the new content
-                    line = line + " PJ: " + newPastJob + ": ";  // You can prepend by doing: textToAdd + line
-                    if(totalTimeInJob > 0)
-                    {
-                        line = line + totalTimeInJob + ",";
-                    }
-                    else
-                    {
-                        line = line + "Less than a year,";
-                    }
+                    line = line + " PJ: " + newPastJob + ": " + formattedStartDate + ": " + formattedEndDate;  // You can prepend by doing: textToAdd + line
                     isLineModified = true; // Modify only the first occurrence
                 }
                 lines.add(line); // Add each line (modified or not) to the list
@@ -101,7 +95,7 @@ public class JobHistory
     }
 
     //Method to remove a past job for a certain id
-    public void removePastJob(String id, String jobToRemove, int startYear, int endYear)
+    public void removePastJob(String id, String jobToRemove, LocalDate startDate, LocalDate endDate)
     {
         try
         {
@@ -111,19 +105,14 @@ public class JobHistory
             // Step 2: Open the file for reading
             reader = new BufferedReader(new FileReader(jobHist));
             String line;
-            String jobWithTime;
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            String formattedStartDate = startDate.format(formatter);
+            String formattedEndDate = endDate.format(formatter);
+            String jobWithDates = "PJ: " + jobToRemove + ": " + formattedStartDate + ": " + formattedEndDate;
 
             // Step 3: Calculate the total time in the job
             //Add the total time in job to the string jobWithTime
-            if(endYear > startYear)
-            {
-                int totalTimeInJob = endYear - startYear;
-                jobWithTime = " PJ: " + jobToRemove + ": " + totalTimeInJob + ",";
-            }
-            else
-            {
-                jobWithTime = " PJ: " + jobToRemove + ": Less than a year,";
-            }
 
             // Step 4: Read each line of the file
             while((line = reader.readLine()) != null)
@@ -132,7 +121,7 @@ public class JobHistory
                 if (line.contains(id) && line.contains(jobToRemove)) 
                 {
                     // Step 6: Remove the job along with the time in job if it matches
-                    line = line.replace(jobWithTime, "").trim();
+                    line = line.replace(jobWithDates, "").trim();
                 }
                 // Add the (possibly modified) line to the list
                 lines.add(line);
@@ -162,8 +151,9 @@ public class JobHistory
     }
 
     //Method to view the current job of a certain id
-    public void viewCurrentJob(String id) 
+    public String getCurrentJob(String id) 
     {
+        String curr = "";
         try 
         {
             // Step 1: Open the file for reading
@@ -197,7 +187,7 @@ public class JobHistory
                         if (part.trim().startsWith("CJ:")) 
                         {
                             // Step 9: Print the job description, removing the "CJ: " prefix
-                            System.out.println(part.substring(5).trim());
+                            curr = part;
                         }
                     }
                 }
@@ -209,6 +199,11 @@ public class JobHistory
             // Step 11: Handle any IO exceptions (printing the message if one occurs)
             e.getMessage();
         }
+        if (curr.isEmpty())
+        {
+            curr = "No current job is found";
+        }
+        return curr;
     }
 
     //Method to add current job to a certain id
@@ -332,17 +327,15 @@ public class JobHistory
     }
     
     //Method to view skills of a certain id
-    public void viewSkill(String id) 
+    public List<String> getSkill(String id) 
     {
+        List<String> skills = new ArrayList<>();
         try 
         {
             // Open the file for reading using BufferedReader
             reader = new BufferedReader(new FileReader(jobHist));
             String line;
             boolean idFound = false; // Flag to check if the ID has been found
-    
-            // Print out the header for the skills
-            System.out.println("Skills for user " + id + ":");
     
             // Read the file line by line
             while ((line = reader.readLine()) != null) {
@@ -356,7 +349,7 @@ public class JobHistory
                     String[] jobs = line.split(","); // Split the line by commas
                     for (String part : jobs) { // Loop through each part of the split line
                         if (part.trim().startsWith("Skill:")) { // Check if the part starts with "Skill:"
-                            System.out.println(part.substring(8).trim()); // Print the skill (after "Skill:")
+                            skills.add(part.substring(8).trim()); // Print the skill (after "Skill:")
                         }
                     }
                 }
@@ -364,10 +357,16 @@ public class JobHistory
         } catch (IOException e) {
             e.getMessage(); // Handle any IOException that occurs
         }
+        if (skills.isEmpty())
+        {
+            skills.add("No skills found");
+        }
+        return skills;
     }
     
     //Method to add skill to a certain id
-    public void addSkill(String id, String newSkill) {
+    public void addSkill(String id, String newSkill)
+    {
         try {
             // Step 1: Read the file into a List of Strings
             List<String> lines = new ArrayList<>();
@@ -400,8 +399,10 @@ public class JobHistory
     }
     
     //Method to remove a skill for a certain id
-    public void removeSkill(String id, String skillToRemove) {
-        try {
+    public void removeSkill(String id, String skillToRemove)
+    {
+        try 
+        {
             // Step 1: Initialize a list to store the lines from the file
             List<String> lines = new ArrayList<>();
             reader = new BufferedReader(new FileReader(jobHist)); // Open file for reading
@@ -433,8 +434,11 @@ public class JobHistory
     }
     
     //Method to view talents and gifts of a certain id
-    public void viewTalentsAndGifts(String id) {
-        try {
+    public List<String> getTalentsAndGifts(String id) 
+    {
+        List<String> talents = new ArrayList<>();
+        try 
+        {
             // Open the file for reading using BufferedReader
             reader = new BufferedReader(new FileReader(jobHist));
             String line;
@@ -455,7 +459,7 @@ public class JobHistory
                     String[] jobs = line.split(","); // Split the line by commas
                     for (String part : jobs) { // Loop through each part of the split line
                         if (part.trim().startsWith("Talent or Gift:")) { // Check if the part starts with "Talent or Gift:"
-                            System.out.println(part.substring(17).trim()); // Print the talent or gift (after "Talent or Gift:")
+                            talents.add(part.substring(17).trim()); // Print the talent or gift (after "Talent or Gift:")
                         }
                     }
                 }
@@ -463,10 +467,16 @@ public class JobHistory
         } catch (IOException e) {
             e.getMessage(); // Handle any IOException that occurs
         }
+        if (talents.isEmpty())
+        {
+            talents.add("Np past talents or gifts found");
+        }
+        return talents;
     }
     
     //Method to add a talent or gift from a certain id
-    public void addTalentsAndGifts(String id, String newTalentOrGift) {
+    public void addTalentsAndGifts(String id, String newTalentOrGift) 
+    {
         try {
             // Step 1: Read the file into a List of Strings
             List<String> lines = new ArrayList<>();
@@ -499,7 +509,8 @@ public class JobHistory
     }
     
     //Method to remove a talent or gift for a certain id
-    public void removeTalentsAndGifts(String id, String talentOrGiftToRemove) {
+    public void removeTalentsAndGifts(String id, String talentOrGiftToRemove) 
+    {
         try {
             // Step 1: Initialize a list to store the lines from the file
             List<String> lines = new ArrayList<>();
@@ -530,8 +541,6 @@ public class JobHistory
             e.getMessage(); // Handle any IOException that occurs
         }
     }
-    
-    
     
     public static void main(String[] args)
     {

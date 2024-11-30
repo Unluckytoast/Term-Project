@@ -7,10 +7,12 @@ public class EmployeesViewGUI
     private JPanel panel;
     private JLabel titleLabel;
     private JButton backButton;
+    private Employee emp;
 
-    EmployeesViewGUI(JPanel parentPanel)
+    EmployeesViewGUI(JPanel parentPanel, Employee emp)
     {
         this.parentPanel = parentPanel;
+        this.emp = emp;
     }
 
     public JPanel createPanel()

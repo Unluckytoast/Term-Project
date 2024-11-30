@@ -2,15 +2,17 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class Test implements ActionListener 
+public class Test implements ActionListener, KeyboardFunction
 {
     private JFrame frame;
     private JPanel mainPanel, loginPanel, centerPanel, topPanel; // Container for all screens
-    private CardLayout cardLayout;
+    private CardLayout cardLayout = new CardLayout();
     private JTextField user;
     private JPasswordField password;
     private JLabel messageLabel, userLabel, passwordLabel;
     private JButton loginButton, closeButton;
+    private static Employee loggedInEmployee;
+    private OpenScreen open;
 
     public Test() 
     {
@@ -23,17 +25,13 @@ public class Test implements ActionListener
         gd.setFullScreenWindow(frame);
 
         // Use CardLayout to manage different screens
-        cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
         frame.add(mainPanel);
 
         // Add screens to CardLayout
         mainPanel.add(createLoginScreen(), "LoginScreen");
         mainPanel.add(new OpenScreen(mainPanel).createPanel(), "OpenScreen");
-        mainPanel.add(new PersonalInformationGUI(mainPanel).createPanel(), "PersonalInfoScreen");
-        mainPanel.add(new SprintEvalGUI(mainPanel).createPanel(), "SprintEvalScreen");
-        mainPanel.add(new EmployeesViewGUI(mainPanel).createPanel(), "EmployeesView");
-
+        
         frame.setVisible(true);
     }
 
@@ -105,6 +103,8 @@ public class Test implements ActionListener
         centerPanel.add(loginButton, gridBag);
 
         loginPanel.add(centerPanel, BorderLayout.CENTER);
+
+        KeyboardFunction.bindEscapeKey(loginPanel);
         
         return loginPanel;
     }
@@ -114,15 +114,14 @@ public class Test implements ActionListener
     {
         if (e.getSource() == loginButton) 
         {
-            boolean loginFound = false;
-            boolean passwordFound = false;
-            while(!loginFound && !passwordFound)
+            HR hr = new HR();
+            loggedInEmployee = HRAppTest.login(hr, user.getText());
+            if (loggedInEmployee != null) 
             {
-                
-            }
-            
-            if (user.getText().equals("j") && String.valueOf(password.getPassword()).equals("j")) 
-            {
+                open.setOpenScreenEmployee(loggedInEmployee);
+                mainPanel.add(new PersonalInformationGUI(mainPanel, loggedInEmployee).createPanel(), "PersonalInfoScreen");
+                mainPanel.add(new SprintEvalGUI(mainPanel, loggedInEmployee).createPanel(), "SprintEvalScreen");
+                mainPanel.add(new EmployeesViewGUI(mainPanel, loggedInEmployee).createPanel(), "EmployeesView");
                 cardLayout.show(mainPanel, "OpenScreen");
                 user.setText("");
                 password.setText("");
