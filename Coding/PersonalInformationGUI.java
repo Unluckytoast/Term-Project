@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import javax.swing.*;
@@ -14,10 +15,9 @@ class PersonalInformationGUI
     private JobHistory jobHistory = new JobHistory();
     private Employee emp;
 
-    PersonalInformationGUI(JPanel parentPanel, Employee emp) 
+    PersonalInformationGUI(JPanel parentPanel) 
     {
         this.parentPanel = parentPanel;
-        this.emp = emp;
 
     }
 
@@ -96,24 +96,36 @@ class PersonalInformationGUI
 
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(5, 5, 5, 5);
+        Font labelFont = new Font("Arial", Font.PLAIN, 24);
         String past[] = job.split(":");
 
-        Font labelFont = new Font("Arial", Font.PLAIN, 24);
-        pastLabel = new JLabel(past[0]);
-        pastLabel.setFont(labelFont);
-        gridBag.gridx = 0;
-        gridBag.gridy = 0;
-        jobPanel.add(pastLabel, gridBag);
-
-        LocalDate startDate = LocalDate.parse(past[1]);
-        LocalDate endDate = LocalDate.parse(past[2]);
-
-        pastTimeLabel = new JLabel("Time in job - " + getDateDifference(startDate, endDate));
-        pastTimeLabel.setFont(labelFont);
-        gridBag.gridx = 0;
-        gridBag.gridy = 1;
-        jobPanel.add(pastTimeLabel, gridBag);
-
+        if(past.length > 2)
+        {
+            pastLabel = new JLabel(past[0]);
+            pastLabel.setFont(labelFont);
+            gridBag.gridx = 0;
+            gridBag.gridy = 0;
+            jobPanel.add(pastLabel, gridBag);
+    
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+    
+            LocalDate startDate = LocalDate.parse(past[1].trim(), formatter);
+            LocalDate endDate = LocalDate.parse(past[2].trim(), formatter);
+    
+            pastTimeLabel = new JLabel("Time in job - " + getDateDifference(startDate, endDate));
+            pastTimeLabel.setFont(labelFont);
+            gridBag.gridx = 0;
+            gridBag.gridy = 1;
+            jobPanel.add(pastTimeLabel, gridBag); 
+        }
+        else
+        {
+            pastLabel = new JLabel(past[0]);
+            pastLabel.setFont(labelFont);
+            gridBag.gridx = 0;
+            gridBag.gridy = 0;
+            jobPanel.add(pastLabel, gridBag);
+        }
         return jobPanel;
     }
 
@@ -126,26 +138,34 @@ class PersonalInformationGUI
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(5, 5, 5, 5);
         String current[] = job.split(":");
-
         Font labelFont = new Font("Arial", Font.PLAIN, 24);
-        currLabel = new JLabel(current[0]);
-        currLabel.setFont(labelFont);
-        gridBag.gridx = 0;
-        gridBag.gridy = 0;
-        jobPanel.add(pastLabel, gridBag);
 
-        LocalDate startDate = LocalDate.parse(current[1]);
-        LocalDate endDate = LocalDate.parse(current[2]);
-
-        currTimeLabel = new JLabel("Time in job - " + getDateDifference(startDate, endDate));
-        currTimeLabel.setFont(labelFont);
-        gridBag.gridx = 0;
-        gridBag.gridy = 1;
-        jobPanel.add(pastTimeLabel, gridBag);
-
-        buttonPanel = new JPanel(new FlowLayout());
-        editButton = new JButton("Edit");
-        deleteButton = new JButton("Delete");
+        if(current.length > 1)
+        {
+            currLabel = new JLabel(current[1]);
+            currLabel.setFont(labelFont);
+            gridBag.gridx = 0;
+            gridBag.gridy = 0;
+            jobPanel.add(pastLabel, gridBag);
+    
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            LocalDate startDate = LocalDate.parse(current[2].trim(), formatter);
+            LocalDate endDate = LocalDate.now();
+    
+            currTimeLabel = new JLabel("Time in job - " + getDateDifference(startDate, endDate));
+            currTimeLabel.setFont(labelFont);
+            gridBag.gridx = 0;
+            gridBag.gridy = 1;
+            jobPanel.add(pastTimeLabel, gridBag);
+        }
+        else
+        {
+            currLabel = new JLabel(current[0]);
+            currLabel.setFont(labelFont);
+            gridBag.gridx = 0;
+            gridBag.gridy = 0;
+            jobPanel.add(pastLabel, gridBag);
+        }
 
         return jobPanel;
     }
@@ -331,6 +351,11 @@ class PersonalInformationGUI
         return demoPanel;
     }
     
+    public void setPersonalInfoEmployee(Employee emp)
+    {
+        this.emp = emp;
+    }
+
     private void showCard(String card) 
     {
         CardLayout cl = (CardLayout) parentPanel.getLayout();
