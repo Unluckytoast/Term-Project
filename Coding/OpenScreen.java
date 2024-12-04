@@ -8,9 +8,10 @@ class OpenScreen implements ActionListener, KeyboardFunction
     private JButton personalInfoButton, sprintEvalButton, writeComplaint, writeSprintEval, viewComplaint, viewEmployees, logoutButton;
     private Employee emp;
 
-    OpenScreen(JPanel parentPanel) 
+    OpenScreen(JPanel parentPanel, Employee emp) 
     {
         this.parentPanel = parentPanel;
+        this.emp = emp;
     }
 
     public JPanel createPanel() 
@@ -22,8 +23,10 @@ class OpenScreen implements ActionListener, KeyboardFunction
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(10, 10, 10, 10);
 
+        //Font font = new Font("Arial", Font.BOLD, 20);
+        Dimension dimension = new Dimension(300, 200);
         personalInfoButton = new JButton("<html><center>View<br>Personal Information</center></html>");
-        personalInfoButton.setPreferredSize(new Dimension(200, 100));
+        personalInfoButton.setPreferredSize(dimension);
         personalInfoButton.setFont(new Font("Arial", Font.BOLD, 20));
         personalInfoButton.addActionListener(e -> showCard("PersonalInfoScreen"));
         gridBag.gridx = 0;
@@ -31,16 +34,16 @@ class OpenScreen implements ActionListener, KeyboardFunction
         buttonPanel.add(personalInfoButton, gridBag);
 
         sprintEvalButton = new JButton("Sprint Evaluation");
-        sprintEvalButton.setPreferredSize(new Dimension(200, 100));
+        sprintEvalButton.setPreferredSize(dimension);
         sprintEvalButton.setFont(new Font("Arial", Font.BOLD, 20));
         sprintEvalButton.addActionListener(e -> showCard("SprintEvalScreen"));
         gridBag.gridx = 1;
         buttonPanel.add(sprintEvalButton, gridBag);
 
         writeComplaint = new JButton("Write Complaint");
-        writeComplaint.setPreferredSize(new Dimension(200, 100));
+        writeComplaint.setPreferredSize(dimension);
         writeComplaint.setFont(new Font("Arial", Font.BOLD, 20));
-        writeComplaint.addActionListener(e -> writeComplaint.setText("You have clicked this button!"));
+        writeComplaint.addActionListener(e -> showCard("WriteComplaint"));
         gridBag.gridx = 0;
         gridBag.gridy = 2;
         buttonPanel.add(writeComplaint, gridBag);
@@ -48,9 +51,9 @@ class OpenScreen implements ActionListener, KeyboardFunction
         if (emp.getJobTitle().equalsIgnoreCase("Supervisor"))
         {
             writeSprintEval = new JButton("Write Sprint Evaluation");
-            writeSprintEval.setPreferredSize(new Dimension(200, 100));
+            writeSprintEval.setPreferredSize(dimension);
             writeSprintEval.setFont(new Font("Arial", Font.BOLD, 20));
-            writeSprintEval.addActionListener(e -> writeSprintEval.setText("You have clicked this button!"));
+            writeSprintEval.addActionListener(e -> showCard("WriteSprint"));
             gridBag.gridx = 1;
             gridBag.gridy = 2;
             buttonPanel.add(writeSprintEval, gridBag);
@@ -59,17 +62,17 @@ class OpenScreen implements ActionListener, KeyboardFunction
         if (emp.getDepartment().equalsIgnoreCase("HR"))
         {
             viewComplaint = new JButton("View Complaints");
-            viewComplaint.setPreferredSize(new Dimension(200, 100));
+            viewComplaint.setPreferredSize(dimension);
             viewComplaint.setFont(new Font("Arial", Font.BOLD, 20));
-            viewComplaint.addActionListener(e -> viewComplaint.setText("You have clicked this button!"));
+            viewComplaint.addActionListener(e -> showCard("ViewComplaint"));
             gridBag.gridx = 0;
             gridBag.gridy = 3;
             buttonPanel.add(viewComplaint, gridBag);
     
-            viewEmployees = new JButton("View Employees");
-            viewEmployees.setPreferredSize(new Dimension(200, 100));
+            viewEmployees = new JButton("Manage Employees");
+            viewEmployees.setPreferredSize(dimension);
             viewEmployees.setFont(new Font("Arial", Font.BOLD, 20));
-            viewEmployees.addActionListener(e -> showCard("EmployeesView"));
+            viewEmployees.addActionListener(e -> showCard("ManageEmps"));
             gridBag.gridx = 1;
             gridBag.gridy = 3;
             buttonPanel.add(viewEmployees, gridBag); 
@@ -93,6 +96,7 @@ class OpenScreen implements ActionListener, KeyboardFunction
     {
         this.emp = emp;
     }
+    
     private void showCard(String card) 
     {
         CardLayout cl = (CardLayout) parentPanel.getLayout();

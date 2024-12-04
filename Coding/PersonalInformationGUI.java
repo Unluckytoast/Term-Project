@@ -7,17 +7,22 @@ import javax.swing.*;
 
 class PersonalInformationGUI 
 {
-    private JPanel panel, parentPanel, jobListPanel, jobPanel, demoPanel, buttonPanel;
-    private JLabel titleLabel, pastLabel, pastTimeLabel, currLabel, currTimeLabel, skillLabel, talentLabel;
+    private JPanel panel, parentPanel, jobListPanel, jobPanel, demoPanel;//, buttonPanel;
+    private JLabel titleLabel;
     private JLabel demoNameLabel, demoRaceLabel, demoAgeLabel, demoAddressLabel, demoContactInfoLabel;
-    private JButton backButton, editButton, deleteButton;
+    private JButton backButton; //, editButton, deleteButton;
     private List<String> pastJobs, skills, talents;
     private JobHistory jobHistory = new JobHistory();
     private Employee emp;
+    private JTextArea pastTextArea, currTextArea, pastTimeTextArea, currTimeTextArea, skillTextArea, talentTextArea;
+    private Dimension dimension = new Dimension(450, 100);
+    private HoldFont hold = new HoldFont();
+    private Font font = hold.getTextFont();
 
-    PersonalInformationGUI(JPanel parentPanel) 
+    PersonalInformationGUI(JPanel parentPanel, Employee emp) 
     {
         this.parentPanel = parentPanel;
+        this.emp = emp;
 
     }
 
@@ -27,7 +32,7 @@ class PersonalInformationGUI
         panel.setBackground(Color.LIGHT_GRAY);
 
         titleLabel = new JLabel("Personal Information", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setFont(hold.getTitleFont());
         panel.add(titleLabel, BorderLayout.NORTH);
 
         jobListPanel = new JPanel(new GridBagLayout());
@@ -53,6 +58,7 @@ class PersonalInformationGUI
         
         String currentJob = jobHistory.getCurrentJob(id);
 
+        gridBag.gridy = gridBag.gridy + 1;
         jobListPanel.add(createCurrJobPanel(currentJob), gridBag);
         gridBag.gridy++;
 
@@ -96,35 +102,38 @@ class PersonalInformationGUI
 
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(5, 5, 5, 5);
-        Font labelFont = new Font("Arial", Font.PLAIN, 24);
         String past[] = job.split(":");
 
         if(past.length > 2)
         {
-            pastLabel = new JLabel(past[0]);
-            pastLabel.setFont(labelFont);
+            pastTextArea = new JTextArea(past[0]);
+            pastTextArea.setFont(font);
+            pastTextArea.setLineWrap(true);
+            pastTextArea.setWrapStyleWord(true);
+            pastTextArea.setEditable(false);
+            pastTextArea.setPreferredSize(dimension);
+            pastTextArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
             gridBag.gridx = 0;
             gridBag.gridy = 0;
-            jobPanel.add(pastLabel, gridBag);
+            jobPanel.add(pastTextArea, gridBag);
     
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
     
             LocalDate startDate = LocalDate.parse(past[1].trim(), formatter);
             LocalDate endDate = LocalDate.parse(past[2].trim(), formatter);
     
-            pastTimeLabel = new JLabel("Time in job - " + getDateDifference(startDate, endDate));
-            pastTimeLabel.setFont(labelFont);
-            gridBag.gridx = 0;
+            pastTimeTextArea = new JTextArea("Time in job - " + getDateDifference(startDate, endDate));
+            pastTimeTextArea.setFont(font);
             gridBag.gridy = 1;
-            jobPanel.add(pastTimeLabel, gridBag); 
+            jobPanel.add(pastTimeTextArea, gridBag); 
         }
         else
         {
-            pastLabel = new JLabel(past[0]);
-            pastLabel.setFont(labelFont);
+            pastTextArea = new JTextArea(past[0]);
+            pastTextArea.setFont(font);
             gridBag.gridx = 0;
             gridBag.gridy = 0;
-            jobPanel.add(pastLabel, gridBag);
+            jobPanel.add(pastTextArea, gridBag);
         }
         return jobPanel;
     }
@@ -138,33 +147,28 @@ class PersonalInformationGUI
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(5, 5, 5, 5);
         String current[] = job.split(":");
-        Font labelFont = new Font("Arial", Font.PLAIN, 24);
+
+        currTextArea = new JTextArea(current[0]);
+        currTextArea.setFont(font);
+        currTextArea.setLineWrap(true);
+        currTextArea.setWrapStyleWord(true);
+        currTextArea.setEditable(false);
+        currTextArea.setPreferredSize(dimension);
+        currTextArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        gridBag.gridx = 0;
+        gridBag.gridy = 0;
+        jobPanel.add(currTextArea, gridBag);
 
         if(current.length > 1)
         {
-            currLabel = new JLabel(current[1]);
-            currLabel.setFont(labelFont);
-            gridBag.gridx = 0;
-            gridBag.gridy = 0;
-            jobPanel.add(pastLabel, gridBag);
-    
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-            LocalDate startDate = LocalDate.parse(current[2].trim(), formatter);
+            LocalDate startDate = LocalDate.parse(current[1].trim(), formatter);
             LocalDate endDate = LocalDate.now();
     
-            currTimeLabel = new JLabel("Time in job - " + getDateDifference(startDate, endDate));
-            currTimeLabel.setFont(labelFont);
-            gridBag.gridx = 0;
+            currTimeTextArea = new JTextArea("Time in job - " + getDateDifference(startDate, endDate));
+            currTimeTextArea.setFont(font);
             gridBag.gridy = 1;
-            jobPanel.add(pastTimeLabel, gridBag);
-        }
-        else
-        {
-            currLabel = new JLabel(current[0]);
-            currLabel.setFont(labelFont);
-            gridBag.gridx = 0;
-            gridBag.gridy = 0;
-            jobPanel.add(pastLabel, gridBag);
+            jobPanel.add(currTimeTextArea, gridBag);
         }
 
         return jobPanel;
@@ -179,12 +183,12 @@ class PersonalInformationGUI
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(5, 5, 5, 5);
 
-        Font labelFont = new Font("Arial", Font.PLAIN, 16);
-        skillLabel = new JLabel(skill);
-        skillLabel.setFont(labelFont);
+        skillTextArea = new JTextArea(skill);
+        skillTextArea.setFont(font);
         gridBag.gridx = 0;
         gridBag.gridy = 0;
-        jobPanel.add(skillLabel, gridBag);
+        jobPanel.add(skillTextArea, gridBag);
+
 
         return jobPanel;
     }
@@ -198,12 +202,11 @@ class PersonalInformationGUI
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(5, 5, 5, 5);
 
-        Font labelFont = new Font("Arial", Font.PLAIN, 24);
-        talentLabel = new JLabel(talent);
-        talentLabel.setFont(labelFont);
+        talentTextArea = new JTextArea(talent);
+        talentTextArea.setFont(font);
         gridBag.gridx = 0;
         gridBag.gridy = 0;
-        jobPanel.add(talentLabel, gridBag);
+        jobPanel.add(talentTextArea, gridBag);
 
         return jobPanel;
     }
@@ -287,12 +290,11 @@ class PersonalInformationGUI
                 demoContactInfoLabel = new JLabel("No contact information available");
             }
 
-            Font labelFont = new Font("Arial", Font.PLAIN, 24);
-            demoNameLabel.setFont(labelFont);
-            demoRaceLabel.setFont(labelFont);
-            demoAgeLabel.setFont(labelFont);
-            demoAddressLabel.setFont(labelFont);
-            demoContactInfoLabel.setFont(labelFont);
+            demoNameLabel.setFont(font);
+            demoRaceLabel.setFont(font);
+            demoAgeLabel.setFont(font);
+            demoAddressLabel.setFont(font);
+            demoContactInfoLabel.setFont(font);
 
             gridBag.gridx = 0;
             gridBag.gridy = 0;
@@ -349,11 +351,6 @@ class PersonalInformationGUI
         demoPanel.add(buttonPanel, gridBag);*/
 
         return demoPanel;
-    }
-    
-    public void setPersonalInfoEmployee(Employee emp)
-    {
-        this.emp = emp;
     }
 
     private void showCard(String card) 

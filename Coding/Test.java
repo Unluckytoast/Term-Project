@@ -6,13 +6,21 @@ public class Test implements ActionListener, KeyboardFunction
 {
     private JFrame frame;
     private JPanel mainPanel, loginPanel, centerPanel, topPanel; // Container for all screens
-    private CardLayout cardLayout = new CardLayout();
+    private CardLayout cardLayout;
     private JTextField user;
     private JPasswordField password;
     private JLabel messageLabel, userLabel, passwordLabel;
     private JButton loginButton, closeButton;
     private static Employee loggedInEmployee;
     private OpenScreen open;
+    private PersonalInformationGUI person;
+    private SprintEvalGUI sprint;
+    private ManageEmployeeGUI manage;
+    private WriteSprintEvalGUI writeSprint;
+    private ViewComplaintGUI complaint;
+    private EmployeeViewGUI view;
+    private AddEmployeeGUI addEmp;
+    private WriteComplaintGUI writeComp;
 
     public Test() 
     {
@@ -20,17 +28,22 @@ public class Test implements ActionListener, KeyboardFunction
         frame = new JFrame("Application");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setUndecorated(true);
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        frame.setSize(800, 800);
+
+        /*GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice gd = ge.getDefaultScreenDevice();
-        gd.setFullScreenWindow(frame);
+        gd.setFullScreenWindow(frame);*/
 
         // Use CardLayout to manage different screens
+        cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
-        frame.add(mainPanel);
 
         // Add screens to CardLayout
         mainPanel.add(createLoginScreen(), "LoginScreen");
-        mainPanel.add(new OpenScreen(mainPanel).createPanel(), "OpenScreen");
+
+        frame.add(mainPanel);
+
+        cardLayout.show(mainPanel, "LoginScreen");
         
         frame.setVisible(true);
     }
@@ -63,7 +76,6 @@ public class Test implements ActionListener, KeyboardFunction
         userLabel.setFont(new Font("Arial", Font.BOLD, 20));
         gridBag.gridx = 0;
         gridBag.gridy = 1;
-        gridBag.anchor = GridBagConstraints.EAST;
         centerPanel.add(userLabel, gridBag);
 
         user = new JTextField(15);
@@ -71,14 +83,12 @@ public class Test implements ActionListener, KeyboardFunction
         user.setPreferredSize(new Dimension(200, 30));
         gridBag.gridx = 1;
         gridBag.gridy = 1;
-        gridBag.anchor = GridBagConstraints.WEST;
         centerPanel.add(user, gridBag);
 
         passwordLabel = new JLabel("Password:");
         passwordLabel.setFont(new Font("Arial", Font.BOLD, 20));
         gridBag.gridx = 0;
         gridBag.gridy = 2;
-        gridBag.anchor = GridBagConstraints.EAST;
         centerPanel.add(passwordLabel, gridBag);
 
         password = new JPasswordField(15);
@@ -86,7 +96,6 @@ public class Test implements ActionListener, KeyboardFunction
         password.setPreferredSize(new Dimension(200, 30));
         gridBag.gridx = 1;
         gridBag.gridy = 2;
-        gridBag.anchor = GridBagConstraints.WEST;
         centerPanel.add(password, gridBag);
 
         messageLabel = new JLabel("");
@@ -94,7 +103,6 @@ public class Test implements ActionListener, KeyboardFunction
         gridBag.gridx = 0;
         gridBag.gridy = 3;
         gridBag.gridwidth = 2;
-        gridBag.anchor = GridBagConstraints.CENTER;
         centerPanel.add(messageLabel, gridBag);
 
         loginButton = new JButton("Login");
@@ -118,10 +126,30 @@ public class Test implements ActionListener, KeyboardFunction
             loggedInEmployee = HRAppTest.login(hr, user.getText());
             if (loggedInEmployee != null) 
             {
-                open.setOpenScreenEmployee(loggedInEmployee);
-                mainPanel.add(new PersonalInformationGUI(mainPanel, loggedInEmployee).createPanel(), "PersonalInfoScreen");
-                mainPanel.add(new SprintEvalGUI(mainPanel, loggedInEmployee).createPanel(), "SprintEvalScreen");
-                mainPanel.add(new EmployeesViewGUI(mainPanel, loggedInEmployee).createPanel(), "EmployeesView");
+                open = new OpenScreen(mainPanel, loggedInEmployee);
+                person = new PersonalInformationGUI(mainPanel, loggedInEmployee);
+                sprint = new SprintEvalGUI(mainPanel, loggedInEmployee);
+                manage = new ManageEmployeeGUI(mainPanel, loggedInEmployee);
+                writeSprint = new WriteSprintEvalGUI(mainPanel, loggedInEmployee);
+                complaint = new ViewComplaintGUI(mainPanel, loggedInEmployee);
+                view = new EmployeeViewGUI(mainPanel, loggedInEmployee);
+                addEmp = new AddEmployeeGUI(mainPanel, loggedInEmployee);
+                writeComp = new WriteComplaintGUI(mainPanel, loggedInEmployee);
+                //open.setOpenScreenEmployee(loggedInEmployee);
+                //person.setPersonalInfoEmployee(loggedInEmployee);
+                //sprint.setEvalEmployee(loggedInEmployee);
+                //view.setViewEmployees(loggedInEmployee);
+                mainPanel.add(open.createPanel(), "OpenScreen");
+                mainPanel.add(person.createPanel(), "PersonalInfoScreen");
+                mainPanel.add(sprint.createPanel(), "SprintEvalScreen");
+                mainPanel.add(manage.createPanel(), "ManageEmps");
+                mainPanel.add(writeSprint.createPanel(), "WriteSprint");
+                mainPanel.add(complaint.createPanel(), "ViewComplaint");
+                mainPanel.add(view.createPanel(), "EmployeesView");
+                mainPanel.add(addEmp.createPanel(), "AddEmp");
+                mainPanel.add(writeComp.createPanel(), "WriteComplaint");
+                frame.revalidate();
+                frame.repaint();
                 cardLayout.show(mainPanel, "OpenScreen");
                 user.setText("");
                 password.setText("");
