@@ -72,7 +72,7 @@ public class JobHistory
                 if (line.contains(id) && !isLineModified) 
                 {
                     // Step 3: Modify the line by appending or prepending the new content
-                    line = line + " PJ: " + newPastJob + ": " + formattedStartDate + ": " + formattedEndDate;  // You can prepend by doing: textToAdd + line
+                    line = line + " PJ: " + newPastJob + ": " + formattedStartDate + ": " + formattedEndDate + ",";  // You can prepend by doing: textToAdd + line
                     isLineModified = true; // Modify only the first occurrence
                 }
                 lines.add(line); // Add each line (modified or not) to the list
@@ -187,7 +187,7 @@ public class JobHistory
                         if (part.trim().startsWith("CJ:")) 
                         {
                             // Step 9: Print the job description, removing the "CJ: " prefix
-                            curr = part;
+                            curr = part.substring(5).trim();
                         }
                     }
                 }
@@ -199,7 +199,7 @@ public class JobHistory
             // Step 11: Handle any IO exceptions (printing the message if one occurs)
             e.getMessage();
         }
-        if (curr.isEmpty())
+        if (curr.equals(""))
         {
             curr = "No current job is found";
         }
@@ -207,7 +207,7 @@ public class JobHistory
     }
 
     //Method to add current job to a certain id
-    public void addCurrentJob(String id, String newCurrentJob, int startYear) 
+    public void addCurrentJob(String id, String newCurrentJob, LocalDate startDate) 
     {
         try 
         {
@@ -219,8 +219,9 @@ public class JobHistory
             reader = new BufferedReader(new FileReader(jobHist));
             String line;
             boolean isLineModified = false; // Flag to ensure only one modification is made
-            int totalTimeInJob = 2024 - startYear; // Calculate total time in job based on the start year
-    
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            String formattedStartDate = startDate.format(formatter);
+
             // Step 2: Read each line of the file
             while ((line = reader.readLine()) != null) 
             {
@@ -228,18 +229,7 @@ public class JobHistory
                 if (line.contains(id) && !isLineModified) 
                 {
                     // Step 3: Append new job information (CJ: newCurrentJob: time) to the line
-                    line = line + " CJ: " + newCurrentJob + ": ";  // Add new current job to the line
-                    
-                    // Add time duration depending on how long the user has been in the job
-                    if (totalTimeInJob > 0) 
-                    {
-                        line = line + totalTimeInJob + ",";  // Add the job duration if more than a year
-                    } 
-                    else 
-                    {
-                        line = line + "Less than a year,";  // Otherwise, indicate it's less than a year
-                    }
-                    
+                    line = line + " CJ: " + newCurrentJob + ": "+ formattedStartDate + ",";  // Add new current job to the line
                     isLineModified = true; // Ensure only the first occurrence of the ID is modified
                 }
                 
@@ -272,7 +262,7 @@ public class JobHistory
     }
     
     //Method to remove current job for a certain id
-    public void removeCurrentJob(String id, String jobToRemove, int startYear) 
+    public void removeCurrentJob(String id, String jobToRemove, LocalDate startDate) 
     {
         try 
         {
@@ -283,11 +273,8 @@ public class JobHistory
             reader = new BufferedReader(new FileReader(jobHist));
             String line;
     
-            // Calculate total time in the job based on the start year
-            int totalTimeInJob = 2024 - startYear;
-    
             // Create a string that represents the current job with its total time in job
-            String jobWithTime = "CJ: " + jobToRemove + ": " + totalTimeInJob + ",";
+            String jobWithTime = "CJ: " + jobToRemove + ": " + startDate + ",";
     
             // Step 2: Read the file line by line
             while ((line = reader.readLine()) != null) 
@@ -469,13 +456,13 @@ public class JobHistory
         }
         if (talents.isEmpty())
         {
-            talents.add("Np past talents or gifts found");
+            talents.add("No past talents or gifts found");
         }
         return talents;
     }
     
     //Method to add a talent or gift from a certain id
-    public void addTalentsAndGifts(String id, String newTalentOrGift) 
+    public void addTalentAndGift(String id, String newTalentOrGift) 
     {
         try {
             // Step 1: Read the file into a List of Strings
