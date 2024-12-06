@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.regex.Pattern;
 import javax.swing.JPanel;
 
 public class RepeatFormat 
@@ -43,5 +44,25 @@ public class RepeatFormat
             long daysDifference = ChronoUnit.DAYS.between(date1, date2);
             return daysDifference + " day(s)";
         }
+    }
+
+    //Method to check if a string with a phone number is a valid phone number
+    public boolean isValidPhoneNumber(String phoneNumber) 
+    {
+        if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
+            return false;
+        }
+        String digitsOnly = phoneNumber.replaceAll("[^0-9]", "");
+        return digitsOnly.length() >= 7 && digitsOnly.length() <= 10 && Pattern.matches("[0-9()\\- ]+", phoneNumber);
+    }
+
+    //Method to check if a string with an address is a valid address
+    public boolean isValidAddress(String address) 
+    {
+        if (address == null || address.trim().isEmpty()) {
+            return false;
+        }
+        String addressPattern = "^[\\d]+[\\s]+[a-zA-Z0-9\\s.,'-]+( Apt [\\d]+)?$";
+        return Pattern.matches(addressPattern, address);
     }
 }

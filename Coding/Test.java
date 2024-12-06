@@ -8,7 +8,7 @@ public class Test implements ActionListener, KeyboardFunction {
     private CardLayout cardLayout;
     private JTextField user;
     private JPasswordField password;
-    private JLabel messageLabel, userLabel, passwordLabel;
+    private JLabel messageLabel, userLabel, passwordLabel, logoLabel;
     private JButton loginButton, closeButton, fullScreenButton; // Added button for full screen
     private static Employee loggedInEmployee;
     private OpenScreen open;
@@ -96,7 +96,7 @@ public class Test implements ActionListener, KeyboardFunction {
         gridBag.insets = new Insets(10, 10, 10, 10);
 
         // Add the logo in the center panel
-        JLabel logoLabel = new JLabel(new ImageIcon(new ImageIcon("logo.png").getImage().getScaledInstance(400, 300, Image.SCALE_SMOOTH)));
+        logoLabel = new JLabel(new ImageIcon(new ImageIcon("logo.png").getImage().getScaledInstance(400, 300, Image.SCALE_SMOOTH)));
         gridBag.gridx = 0;
         gridBag.gridy = 0;
         gridBag.gridwidth = 2;  // Make the logo span across both columns

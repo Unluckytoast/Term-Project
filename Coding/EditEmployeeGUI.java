@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.regex.Pattern;
 import javax.swing.*;
 
 public class EditEmployeeGUI {
@@ -32,6 +31,7 @@ public class EditEmployeeGUI {
         panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.WHITE);  // Set background to white
 
+        //Create Title label
         titleLabel = new JLabel("Edit Employee", SwingConstants.CENTER);
         titleLabel.setFont(repeat.getTitleFont());
         panel.add(titleLabel, BorderLayout.NORTH);
@@ -132,6 +132,7 @@ public class EditEmployeeGUI {
         gridBag.gridy++;
         addEmpPanel.add(currJobDeptLabel, gridBag);
 
+        //Create Current Job Department text field
         currJobDeptText = new JTextField(15);
         currJobDeptText.setFont(font);
         currJobDeptText.setText(emp.getDepartment());
@@ -145,6 +146,7 @@ public class EditEmployeeGUI {
         gridBag.gridy++;
         addEmpPanel.add(currJobTitleLabel, gridBag);
 
+        //Create Current Job text field
         currJobTitleText = new JTextField(15);
         currJobTitleText.setFont(font);
         currJobTitleText.setText(emp.getJobTitle());
@@ -152,6 +154,7 @@ public class EditEmployeeGUI {
         addEmpPanel.add(currJobTitleText, gridBag);
 
         // Button styles
+        //Create Edit button
         editButton = new JButton("Edit");
         editButton.setFont(font);
         editButton.setBackground(Color.decode("#2A5490")); // Set button color
@@ -160,6 +163,7 @@ public class EditEmployeeGUI {
         gridBag.gridy++;
         addEmpPanel.add(editButton, gridBag);
 
+        //Create Save button
         saveButton = new JButton("Save");
         saveButton.setFont(font);
         saveButton.setBackground(Color.decode("#2A5490")); // Set button color
@@ -168,6 +172,7 @@ public class EditEmployeeGUI {
         gridBag.gridy++;
         addEmpPanel.add(saveButton, gridBag);
 
+        //Create Message label
         messageLabel = new JLabel("");
         messageLabel.setForeground(Color.RED);
         messageLabel.setFont(font);
@@ -177,6 +182,7 @@ public class EditEmployeeGUI {
         gridBag.anchor = GridBagConstraints.CENTER;
         addEmpPanel.add(messageLabel, gridBag);
 
+        //Create Scroll Pane using addEmpPanel
         JScrollPane scrollPane = new JScrollPane(addEmpPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         panel.add(scrollPane, BorderLayout.CENTER);
@@ -217,8 +223,8 @@ public class EditEmployeeGUI {
                     return;
                 }
                 // Further validations
-                boolean isAddressValid = isValidAddress(addressText.getText());
-                boolean isPhoneNumValid = isValidPhoneNumber(phoneNumberText.getText());
+                boolean isAddressValid = repeat.isValidAddress(addressText.getText());
+                boolean isPhoneNumValid = repeat.isValidPhoneNumber(phoneNumberText.getText());
 
                 if (isAddressValid && isPhoneNumValid) {
                     newDemo = new Demographics(
@@ -244,22 +250,6 @@ public class EditEmployeeGUI {
     // Method to edit employee details
     private void editEmployeeDetails() {
         saveEmployeeDetails();
-    }
-
-    public static boolean isValidPhoneNumber(String phoneNumber) {
-        if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
-            return false;
-        }
-        String digitsOnly = phoneNumber.replaceAll("[^0-9]", "");
-        return digitsOnly.length() >= 7 && digitsOnly.length() <= 10 && Pattern.matches("[0-9()\\- ]+", phoneNumber);
-    }
-
-    public static boolean isValidAddress(String address) {
-        if (address == null || address.trim().isEmpty()) {
-            return false;
-        }
-        String addressPattern = "^[\\d]+[\\s]+[a-zA-Z0-9\\s.,'-]+( Apt [\\d]+)?$";
-        return Pattern.matches(addressPattern, address);
     }
 }
 

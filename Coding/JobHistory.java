@@ -6,7 +6,7 @@ import java.util.List;
 
 public class JobHistory
 {
-    private static final String jobHist = "JobHistory.txt";
+    private static final String JOBHIST = "JobHistory.txt";
     BufferedReader reader;
     BufferedWriter writer;
     
@@ -16,7 +16,9 @@ public class JobHistory
         List<String> pastJobs = new ArrayList<>();
         try
         {
-            reader = new BufferedReader(new FileReader(jobHist));
+            //Read Lines on the jobHistory.txt file to find the line with
+            //the matching id
+            reader = new BufferedReader(new FileReader(JOBHIST));
             String line;
             boolean idFound = false;
 
@@ -27,6 +29,7 @@ public class JobHistory
                     idFound = true;
                 }
                 
+                //If id is found, this searches for the past jobs, and adds them to pastJobs
                 if(idFound && line.contains("PJ:"))
                 {
                     String[] jobs = line.split(",");
@@ -44,9 +47,10 @@ public class JobHistory
         {
             e.getMessage();
         }
+        //If pastJobs is Empty, it will say that nothing is found
         if (pastJobs.isEmpty()) 
         {
-            pastJobs.add("No past jobs found for user " + id); // Default if no jobs found
+            pastJobs.add("No past jobs found for user " + id);
         }
         return pastJobs;
     }
@@ -56,9 +60,9 @@ public class JobHistory
     {
         try 
         {
-            // Step 1: Read the file into a List of Strings
+            //Read the file into a List of Strings
             List<String> lines = new ArrayList<>();
-            reader = new BufferedReader(new FileReader(jobHist));
+            reader = new BufferedReader(new FileReader(JOBHIST));
             String line;
             boolean isLineModified = false;
 
@@ -68,19 +72,19 @@ public class JobHistory
 
             while ((line = reader.readLine()) != null) 
             {
-                // Step 2: Check if the current line contains the search text
+                //Check if the current line contains the search text
                 if (line.contains(id) && !isLineModified) 
                 {
-                    // Step 3: Modify the line by appending or prepending the new content
-                    line = line + " PJ: " + newPastJob + ": " + formattedStartDate + ": " + formattedEndDate + ",";  // You can prepend by doing: textToAdd + line
-                    isLineModified = true; // Modify only the first occurrence
+                    //Modify the line by appending or prepending the new content
+                    line = line + " PJ: " + newPastJob + ": " + formattedStartDate + ": " + formattedEndDate + ",";
+                    isLineModified = true;
                 }
-                lines.add(line); // Add each line (modified or not) to the list
+                lines.add(line);
             }
             reader.close();
 
-            // Step 4: Write the modified content back to the file
-            writer = new BufferedWriter(new FileWriter(jobHist));
+            //Write the modified content back to the file
+            writer = new BufferedWriter(new FileWriter(JOBHIST));
             for (String modifiedLine : lines) 
             {
                 writer.write(modifiedLine);
@@ -99,53 +103,51 @@ public class JobHistory
     {
         try
         {
-            // Step 1: Create a list to store lines read from the file
+            //Create a list to store lines read from the file
             List<String> lines = new ArrayList<>();
 
-            // Step 2: Open the file for reading
-            reader = new BufferedReader(new FileReader(jobHist));
+            //Open the file for reading
+            reader = new BufferedReader(new FileReader(JOBHIST));
             String line;
 
+            //Create String to find with past job
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
             String formattedStartDate = startDate.format(formatter);
             String formattedEndDate = endDate.format(formatter);
-            String jobWithDates = "PJ: " + jobToRemove + ": " + formattedStartDate + ": " + formattedEndDate;
+            String jobWithDates = "PJ: " + jobToRemove + ": " + formattedStartDate + ": " + formattedEndDate + ",";
 
-            // Step 3: Calculate the total time in the job
-            //Add the total time in job to the string jobWithTime
-
-            // Step 4: Read each line of the file
+            //Read each line of the file
             while((line = reader.readLine()) != null)
             {
-                // Step 5: Check if the line contains both the user id and job to remove
+                //Check if the line contains both the user id and job to remove
                 if (line.contains(id) && line.contains(jobToRemove)) 
                 {
-                    // Step 6: Remove the job along with the time in job if it matches
+                    //Remove the job along with the time in job if it matches
                     line = line.replace(jobWithDates, "").trim();
                 }
-                // Add the (possibly modified) line to the list
+                //Add the (possibly modified) line to the list
                 lines.add(line);
             }
 
-            // Step 7: Close the reader as reading is finished
+            //Close the reader as reading is finished
             reader.close();
 
-            // Step 8: Open the file for writing (overwriting the file)
-            writer = new BufferedWriter(new FileWriter(jobHist));
+            //Open the file for writing (overwriting the file)
+            writer = new BufferedWriter(new FileWriter(JOBHIST));
 
-            // Step 9: Write the modified lines back to the file
+            //Write the modified lines back to the file
             for(String newLine : lines)
             {
                 writer.write(newLine);
                 writer.newLine();
             }
 
-            // Step 10: Close the writer after writing
+            //Close the writer after writing
             writer.close();
         }
         catch(IOException e)
         {
-            // Step 11: Handle any potential IO exceptions
+            //Handle any potential IO exceptions
             e.getMessage();
         }
     }
@@ -156,47 +158,44 @@ public class JobHistory
         String curr = "";
         try 
         {
-            // Step 1: Open the file for reading
-            reader = new BufferedReader(new FileReader(jobHist));
+            //Open the file for reading
+            reader = new BufferedReader(new FileReader(JOBHIST));
             String line;
-            boolean idFound = false;  // To track if the user ID has been found
+            boolean idFound = false;
     
-            // Step 2: Print a message indicating the job search for the user
-            System.out.println("Current Job for user " + id + ":");
-    
-            // Step 3: Read the file line by line
+            //Read the file line by line
             while ((line = reader.readLine()) != null) 
             {
                 
-                // Step 4: Check if the current line contains the user ID
+                //Check if the current line contains the user ID
                 if (line.contains(id)) 
                 {
-                    idFound = true;  // Mark that the ID was found
+                    idFound = true;
                 }
     
-                // Step 5: If ID was found and the line contains a "CJ:" (current job), process it
+                //If ID was found and the line contains a "CJ:" (current job), process it
                 if (idFound && line.contains("CJ:")) 
                 {
-                    // Step 6: Split the line by commas to get the job parts
+                    //Split the line by commas to get the job parts
                     String[] jobs = line.split(",");
     
-                    // Step 7: Loop through each part of the job description
+                    //Loop through each part of the job description
                     for (String part : jobs) 
                     {
-                        // Step 8: If the part starts with "CJ:", print the job description
+                        //If the part starts with "CJ:", print the job description
                         if (part.trim().startsWith("CJ:")) 
                         {
-                            // Step 9: Print the job description, removing the "CJ: " prefix
+                            //Print the job description, removing the "CJ: " prefix
                             curr = part.substring(5).trim();
                         }
                     }
                 }
             }
-            // Step 10: Reader will be closed automatically at the end of the try block
+            //Reader will be closed automatically at the end of the try block
         }
         catch (IOException e) 
         {
-            // Step 11: Handle any IO exceptions (printing the message if one occurs)
+            //Handle any IO exceptions (printing the message if one occurs)
             e.getMessage();
         }
         if (curr.equals(""))
@@ -211,53 +210,53 @@ public class JobHistory
     {
         try 
         {
-            // Step 1: Read the file into a List of Strings
-            // Create a list to hold all the lines from the file
+            //Read the file into a List of Strings
+            //Create a list to hold all the lines from the file
             List<String> lines = new ArrayList<>();
             
-            // Open the file for reading using BufferedReader
-            reader = new BufferedReader(new FileReader(jobHist));
+            //Open the file for reading using BufferedReader
+            reader = new BufferedReader(new FileReader(JOBHIST));
             String line;
-            boolean isLineModified = false; // Flag to ensure only one modification is made
+            boolean isLineModified = false; //Flag to ensure only one modification is made
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
             String formattedStartDate = startDate.format(formatter);
 
-            // Step 2: Read each line of the file
+            //Read each line of the file
             while ((line = reader.readLine()) != null) 
             {
-                // Check if the current line contains the user ID and hasn't been modified yet
+                //Check if the current line contains the user ID and hasn't been modified yet
                 if (line.contains(id) && !isLineModified) 
                 {
-                    // Step 3: Append new job information (CJ: newCurrentJob: time) to the line
-                    line = line + " CJ: " + newCurrentJob + ": "+ formattedStartDate + ",";  // Add new current job to the line
-                    isLineModified = true; // Ensure only the first occurrence of the ID is modified
+                    //Append new job information (CJ: newCurrentJob: time) to the line
+                    line = line + " CJ: " + newCurrentJob + ": "+ formattedStartDate + ","; 
+                    isLineModified = true;
                 }
                 
-                // Add the (possibly modified) line to the list of lines
+                //Add the (possibly modified) line to the list of lines
                 lines.add(line);
             }
     
-            // Close the reader after reading all the lines
+            //Close the reader after reading all the lines
             reader.close();
     
-            // Step 4: Write the modified content back to the file
-            // Open the file for writing (overwriting it with new content)
-            writer = new BufferedWriter(new FileWriter(jobHist));
+            //Write the modified content back to the file
+            //Open the file for writing (overwriting it with new content)
+            writer = new BufferedWriter(new FileWriter(JOBHIST));
             
-            // Write each line from the list (with the modifications) back to the file
+            //Write each line from the list (with the modifications) back to the file
             for (String modifiedLine : lines) 
             {
                 writer.write(modifiedLine);
-                writer.newLine(); // Ensure each line ends with a new line
+                writer.newLine();
             }
             
-            // Close the writer after writing all lines
+            //Close the writer after writing all lines
             writer.close();
         } 
         catch (IOException e) 
         {
-            // Handle any potential IOExceptions
-            e.getMessage();  // Get and display the exception message if any error occurs
+            //Handle any potential IOExceptions
+            e.getMessage();
         }
     }
     
@@ -266,50 +265,48 @@ public class JobHistory
     {
         try 
         {
-            // Step 1: Initialize a list to store the lines from the file
+            //Initialize a list to store the lines from the file
             List<String> lines = new ArrayList<>();
             
-            // Open the file for reading using BufferedReader
-            reader = new BufferedReader(new FileReader(jobHist));
+            //Open the file for reading using BufferedReader
+            reader = new BufferedReader(new FileReader(JOBHIST));
             String line;
     
-            // Create a string that represents the current job with its total time in job
+            //Create a string that represents the current job with its total time in job
             String jobWithTime = "CJ: " + jobToRemove + ": " + startDate + ",";
     
-            // Step 2: Read the file line by line
+            //Read the file line by line
             while ((line = reader.readLine()) != null) 
             {
-                // Check if the line contains both the user ID and the job to be removed
+                //Check if the line contains both the user ID and the job to be removed
                 if (line.contains(id) && line.contains(jobToRemove)) 
                 {
-                    // Step 3: Remove the "CJ: jobToRemove" and its corresponding time from the line
-                    line = line.replace(jobWithTime, "").trim(); // Remove the job and time in one go
+                    //Remove the "CJ: jobToRemove" and its corresponding time from the line
+                    line = line.replace(jobWithTime, "").trim();
                 }
     
-                // Add the (modified or unmodified) line to the list of lines
+                //Add the (modified or unmodified) line to the list of lines
                 lines.add(line);
             }
-    
-            // Close the reader after reading all the lines
             reader.close();
     
-            // Step 4: Open the file for writing (overwrite mode) using BufferedWriter
-            writer = new BufferedWriter(new FileWriter(jobHist));
+            //Open the file for writing (overwrite mode) using BufferedWriter
+            writer = new BufferedWriter(new FileWriter(JOBHIST));
             
-            // Write each line from the list (with the modifications) back to the file
+            //Write each line from the list (with the modifications) back to the file
             for (String newLine : lines) 
             {
-                writer.write(newLine); // Write the modified or unmodified line back
-                writer.newLine(); // Ensure each line ends with a new line
+                writer.write(newLine);
+                writer.newLine();
             }
     
-            // Close the writer after writing all lines
+            //Close the writer after writing all lines
             writer.close();
         } 
         catch (IOException e) 
         {
-            // Handle any potential IOExceptions
-            e.getMessage();  // Get and display the exception message if any error occurs
+            //Handle any potential IOExceptions
+            e.getMessage();
         }
     }
     
@@ -319,30 +316,37 @@ public class JobHistory
         List<String> skills = new ArrayList<>();
         try 
         {
-            // Open the file for reading using BufferedReader
-            reader = new BufferedReader(new FileReader(jobHist));
+            //Open the file for reading using BufferedReader
+            reader = new BufferedReader(new FileReader(JOBHIST));
             String line;
-            boolean idFound = false; // Flag to check if the ID has been found
-    
-            // Read the file line by line
-            while ((line = reader.readLine()) != null) {
-                // Check if the current line contains the user ID
-                if (line.contains(id)) {
-                    idFound = true; // Set flag to true once the ID is found
+            boolean idFound = false;
+
+            //Read the file line by line
+            while ((line = reader.readLine()) != null) 
+            {
+                //Check if the current line contains the user ID
+                if (line.contains(id)) 
+                {
+                    idFound = true;
                 }
     
-                // If the ID is found and the line contains "Skill:", extract and print the skills
-                if (idFound && line.contains("Skill:")) {
-                    String[] jobs = line.split(","); // Split the line by commas
-                    for (String part : jobs) { // Loop through each part of the split line
-                        if (part.trim().startsWith("Skill:")) { // Check if the part starts with "Skill:"
-                            skills.add(part.substring(8).trim()); // Print the skill (after "Skill:")
+                //If the ID is found and the line contains "Skill:", extract and print the skills
+                if (idFound && line.contains("Skill:")) 
+                {
+                    String[] jobs = line.split(","); 
+                    for (String part : jobs) 
+                    { 
+                        if (part.trim().startsWith("Skill:")) 
+                        {
+                            skills.add(part.substring(8).trim());
                         }
                     }
                 }
             }
-        } catch (IOException e) {
-            e.getMessage(); // Handle any IOException that occurs
+        } catch (IOException e) 
+        {
+            //Handle any IOException that occurs
+            e.getMessage();
         }
         if (skills.isEmpty())
         {
@@ -354,34 +358,41 @@ public class JobHistory
     //Method to add skill to a certain id
     public void addSkill(String id, String newSkill)
     {
-        try {
-            // Step 1: Read the file into a List of Strings
+        try 
+        {
+            //Read the file into a List of Strings
             List<String> lines = new ArrayList<>();
-            reader = new BufferedReader(new FileReader(jobHist)); // Open file for reading
+            reader = new BufferedReader(new FileReader(JOBHIST));
             String line;
-            boolean isLineModified = false; // Flag to ensure only one line is modified
+            boolean isLineModified = false;
     
-            // Step 2: Read the file line by line
-            while ((line = reader.readLine()) != null) {
-                // Step 3: Check if the current line contains the user ID and hasn't been modified yet
-                if (line.contains(id) && !isLineModified) {
-                    // Step 4: Modify the line by appending the new skill
+            //Read the file line by line
+            while ((line = reader.readLine()) != null) 
+            {
+                //Check if the current line contains the user ID and hasn't been modified yet
+                if (line.contains(id) && !isLineModified) 
+                {
+                    //Modify the line by appending the new skill
                     line = line + " Skill: " + newSkill + ",";
-                    isLineModified = true; // Set flag to true once the line is modified
+                    isLineModified = true;
                 }
-                lines.add(line); // Add each line (modified or not) to the list
+                lines.add(line);
             }
-            reader.close(); // Close the reader
+            reader.close();
     
-            // Step 5: Write the modified content back to the file
-            writer = new BufferedWriter(new FileWriter(jobHist)); // Open file for writing
-            for (String modifiedLine : lines) {
-                writer.write(modifiedLine); // Write each line to the file
-                writer.newLine(); // Add a new line after each line
+            //Write the modified content back to the file
+            writer = new BufferedWriter(new FileWriter(JOBHIST));
+            for (String modifiedLine : lines) 
+            {
+                writer.write(modifiedLine);
+                writer.newLine();
             }
-            writer.close(); // Close the writer
-        } catch (IOException e) {
-            e.getMessage(); // Handle any IOException that occurs
+            writer.close();
+        } 
+        catch (IOException e) 
+        {
+            //Handle any IOException that occurs
+            e.getMessage();
         }
     }
     
@@ -390,33 +401,39 @@ public class JobHistory
     {
         try 
         {
-            // Step 1: Initialize a list to store the lines from the file
+            //Initialize a list to store the lines from the file
             List<String> lines = new ArrayList<>();
-            reader = new BufferedReader(new FileReader(jobHist)); // Open file for reading
+            reader = new BufferedReader(new FileReader(JOBHIST));
             String line;
     
-            // Step 2: Create a string that represents the skill to remove
+            //Create a string that represents the skill to remove
             String removeSkill = "Skill: " + skillToRemove + ",";
     
-            // Step 3: Read the file line by line
-            while ((line = reader.readLine()) != null) {
-                // Step 4: If the line contains the skill to remove, replace it
-                if (line.contains(removeSkill)) {
-                    line = line.replace(removeSkill, "").trim(); // Remove the skill from the line
+            //Read the file line by line
+            while ((line = reader.readLine()) != null) 
+            {
+                //If the line contains the skill to remove, replace it
+                if (line.contains(removeSkill)) 
+                {
+                    line = line.replace(removeSkill, "").trim();
                 }
-                lines.add(line); // Add the (modified or unmodified) line to the list
+                lines.add(line);
             }
-            reader.close(); // Close the reader
+            reader.close();
     
-            // Step 5: Write the modified content back to the file
-            writer = new BufferedWriter(new FileWriter(jobHist)); // Open file for writing
-            for (String newLine : lines) {
-                writer.write(newLine); // Write each line back to the file
-                writer.newLine(); // Add a new line after each line
+            //Write the modified content back to the file
+            writer = new BufferedWriter(new FileWriter(JOBHIST));
+            for (String newLine : lines) 
+            {
+                writer.write(newLine);
+                writer.newLine();
             }
-            writer.close(); // Close the writer
-        } catch (IOException e) {
-            e.getMessage(); // Handle any IOException that occurs
+            writer.close();
+        } 
+        catch (IOException e) 
+        {
+            //Handle any IOException that occurs
+            e.getMessage();
         }
     }
     
@@ -426,33 +443,42 @@ public class JobHistory
         List<String> talents = new ArrayList<>();
         try 
         {
-            // Open the file for reading using BufferedReader
-            reader = new BufferedReader(new FileReader(jobHist));
+            //Open the file for reading using BufferedReader
+            reader = new BufferedReader(new FileReader(JOBHIST));
             String line;
-            boolean idFound = false; // Flag to check if the ID has been found
+            boolean idFound = false;
     
-            // Print out the header for the talents or gifts
+            //Print out the header for the talents or gifts
             System.out.println("Talents or Gifts for user " + id + ":");
     
-            // Read the file line by line
-            while ((line = reader.readLine()) != null) {
-                // Check if the current line contains the user ID
-                if (line.contains(id)) {
-                    idFound = true; // Set flag to true once the ID is found
+            //Read the file line by line
+            while ((line = reader.readLine()) != null)
+            {
+                //Check if the current line contains the user ID
+                if (line.contains(id)) 
+                {
+                    idFound = true;
                 }
     
-                // If the ID is found and the line contains "Talent or Gift:", extract and print the talents/gifts
-                if (idFound && line.contains("Talent or Gift:")) {
-                    String[] jobs = line.split(","); // Split the line by commas
-                    for (String part : jobs) { // Loop through each part of the split line
-                        if (part.trim().startsWith("Talent or Gift:")) { // Check if the part starts with "Talent or Gift:"
-                            talents.add(part.substring(17).trim()); // Print the talent or gift (after "Talent or Gift:")
+                //If the ID is found and the line contains "Talent or Gift:", extract and print the talents/gifts
+                if (idFound && line.contains("Talent or Gift:")) 
+                {
+                    String[] jobs = line.split(",");
+                    for (String part : jobs) 
+                    {
+                        //Check if the part starts with "Talent or Gift:"
+                        if (part.trim().startsWith("Talent or Gift:")) 
+                        {
+                            talents.add(part.substring(17).trim());
                         }
                     }
                 }
             }
-        } catch (IOException e) {
-            e.getMessage(); // Handle any IOException that occurs
+        } 
+        catch (IOException e) 
+        {
+            //Handle any IOException that occurs
+            e.getMessage();
         }
         if (talents.isEmpty())
         {
@@ -464,73 +490,82 @@ public class JobHistory
     //Method to add a talent or gift from a certain id
     public void addTalentAndGift(String id, String newTalentOrGift) 
     {
-        try {
-            // Step 1: Read the file into a List of Strings
+        try 
+        {
+            //Read the file into a List of Strings
             List<String> lines = new ArrayList<>();
-            reader = new BufferedReader(new FileReader(jobHist)); // Open file for reading
+            reader = new BufferedReader(new FileReader(JOBHIST));
             String line;
-            boolean isLineModified = false; // Flag to ensure only one line is modified
+            boolean isLineModified = false;
     
-            // Step 2: Read the file line by line
-            while ((line = reader.readLine()) != null) {
-                // Step 3: Check if the current line contains the user ID and hasn't been modified yet
-                if (line.contains(id) && !isLineModified) {
-                    // Step 4: Modify the line by appending the new talent or gift
+            //Read the file line by line
+            while ((line = reader.readLine()) != null) 
+            {
+                //Check if the current line contains the user ID and hasn't been modified yet
+                if (line.contains(id) && !isLineModified) 
+                {
+                    //Modify the line by appending the new talent or gift
                     line = line + " Talent or Gift: " + newTalentOrGift + ",";
-                    isLineModified = true; // Set flag to true once the line is modified
+                    isLineModified = true;
                 }
-                lines.add(line); // Add each line (modified or not) to the list
+                lines.add(line);
             }
-            reader.close(); // Close the reader
+            reader.close();
     
-            // Step 5: Write the modified content back to the file
-            writer = new BufferedWriter(new FileWriter(jobHist)); // Open file for writing
-            for (String modifiedLine : lines) {
-                writer.write(modifiedLine); // Write each line to the file
-                writer.newLine(); // Add a new line after each line
+            //Write the modified content back to the file
+            writer = new BufferedWriter(new FileWriter(JOBHIST));
+            for (String modifiedLine : lines) 
+            {
+                writer.write(modifiedLine);
+                writer.newLine();
             }
-            writer.close(); // Close the writer
-        } catch (IOException e) {
-            e.getMessage(); // Handle any IOException that occurs
+            writer.close();
+        } 
+        catch (IOException e) 
+        {
+            //Handle any IOException that occurs
+            e.getMessage();
         }
     }
     
     //Method to remove a talent or gift for a certain id
     public void removeTalentsAndGifts(String id, String talentOrGiftToRemove) 
     {
-        try {
-            // Step 1: Initialize a list to store the lines from the file
+        try 
+        {
+            //Initialize a list to store the lines from the file
             List<String> lines = new ArrayList<>();
-            reader = new BufferedReader(new FileReader(jobHist)); // Open file for reading
+            reader = new BufferedReader(new FileReader(JOBHIST)); //Open file for reading
             String line;
     
-            // Step 2: Create a string that represents the talent or gift to remove
+            //Create a string that represents the talent or gift to remove
             String removeSkill = "Talent or Gift: " + talentOrGiftToRemove + ",";
     
-            // Step 3: Read the file line by line
-            while ((line = reader.readLine()) != null) {
-                // Step 4: If the line contains the talent or gift to remove, replace it
-                if (line.contains(removeSkill)) {
-                    line = line.replace(removeSkill, "").trim(); // Remove the talent or gift from the line
+            //Read the file line by line
+            while ((line = reader.readLine()) != null) 
+            {
+                //If the line contains the talent or gift to remove, replace it
+                if (line.contains(removeSkill)) 
+                {
+                    line = line.replace(removeSkill, "").trim(); //Remove the talent or gift from the line
                 }
-                lines.add(line); // Add the (modified or unmodified) line to the list
+                lines.add(line); //Add the (modified or unmodified) line to the list
             }
-            reader.close(); // Close the reader
+            reader.close();
     
-            // Step 5: Write the modified content back to the file
-            writer = new BufferedWriter(new FileWriter(jobHist)); // Open file for writing
-            for (String newLine : lines) {
-                writer.write(newLine); // Write each line back to the file
-                writer.newLine(); // Add a new line after each line
+            //Write the modified content back to the file
+            writer = new BufferedWriter(new FileWriter(JOBHIST)); //Open file for writing
+            for (String newLine : lines) 
+            {
+                writer.write(newLine);
+                writer.newLine();
             }
-            writer.close(); // Close the writer
-        } catch (IOException e) {
-            e.getMessage(); // Handle any IOException that occurs
+            writer.close();
+        } 
+        catch (IOException e) 
+        {
+            //Handle any IOException that occurs
+            e.getMessage();
         }
-    }
-    
-    public static void main(String[] args)
-    {
-        JobHistory job = new JobHistory();
     }
 }

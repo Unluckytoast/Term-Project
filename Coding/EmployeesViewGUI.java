@@ -14,9 +14,13 @@ public class EmployeesViewGUI {
     private JLabel titleLabel, idLabel;
     private JTextField idField;
     private JTextArea detailsArea;
+    private RepeatFormat repeat = new RepeatFormat();
+    private Font font = repeat.getTextFont();
     private HR hr; // Reference to HR class to access fireEmployee method
 
-    public EmployeesViewGUI(JPanel parentPanel, Employee emp, HR hr) {
+    //Constructor
+    public EmployeesViewGUI(JPanel parentPanel, Employee emp, HR hr) 
+    {
         this.parentPanel = parentPanel;
         this.emp = emp;
         this.hr = hr; // Initialize HR instance
@@ -24,17 +28,17 @@ public class EmployeesViewGUI {
 
     public JPanel createPanel() {
         panel = new JPanel(new BorderLayout());
-        panel.setBackground(Color.WHITE); // Sea Fun background
+        panel.setBackground(Color.WHITE);
 
         // Title label
         titleLabel = new JLabel("View Employees", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Georgia", Font.BOLD, 20));
-        titleLabel.setForeground(new Color(60, 60, 60)); // Dark gray text
+        titleLabel.setFont(repeat.getTitleFont());
+        titleLabel.setForeground(new Color(60, 60, 60));
         panel.add(titleLabel, BorderLayout.NORTH);
 
         // Form content
         formPanel = new JPanel(new GridBagLayout());
-        formPanel.setBackground(Color.WHITE); // Sea Fun background
+        formPanel.setBackground(Color.WHITE);
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(10, 10, 10, 10);
 
@@ -64,7 +68,7 @@ public class EmployeesViewGUI {
 
         // Button to view employee details
         viewButton = new JButton("View Employee");
-        styleButton(viewButton, Color.decode("#2A5490"), Color.WHITE); // Sea Fun button
+        styleButton(viewButton, Color.decode("#2A5490"), Color.WHITE);
         viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -89,8 +93,8 @@ public class EmployeesViewGUI {
 
         // Adding the Edit Employee button
         editEmpButton = new JButton("Edit Employee");
-        styleButton(editEmpButton, Color.decode("#2A5490"), Color.WHITE); // Sea Fun button
-        editEmpButton.addActionListener(e -> showCard("EditEmp"));
+        styleButton(editEmpButton, Color.decode("#2A5490"), Color.WHITE);
+        editEmpButton.addActionListener(e -> repeat.showCard(parentPanel, "EditEmp"));
         gridBag.gridy = 3;
         gridBag.gridwidth = 2;
         formPanel.add(editEmpButton, gridBag);
@@ -122,12 +126,13 @@ public class EmployeesViewGUI {
         // Back button to return to the previous screen
         backButton = new JButton("Back");
         styleButton(backButton, Color.decode("#2A5490"), Color.WHITE); // Sea Fun button
-        backButton.addActionListener(e -> showCard("ManageEmps"));
+        backButton.addActionListener(e -> repeat.showCard(parentPanel, "ManageEmps"));
         panel.add(backButton, BorderLayout.SOUTH);
 
         return panel;
     }
 
+    //Method to style a button
     private void styleButton(JButton button, Color bgColor, Color textColor) {
         button.setFont(new Font("Georgia", Font.BOLD, 16));
         button.setBackground(bgColor);
@@ -137,6 +142,7 @@ public class EmployeesViewGUI {
         button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // Padding around the text
     }
 
+    //Method to return Employee Id and Demographics
     private String readEmployeeId(String employeeId) {
         File file = new File("employeeData.txt");
         StringBuilder result = new StringBuilder();
@@ -177,10 +183,5 @@ public class EmployeesViewGUI {
         }
 
         return result.toString();
-    }
-
-    private void showCard(String card) {
-        CardLayout cl = (CardLayout) parentPanel.getLayout();
-        cl.show(parentPanel, card);
     }
 }
