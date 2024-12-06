@@ -1,42 +1,42 @@
 import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import javax.swing.*;
 
 class PersonalInformationGUI 
 {
-    private JPanel panel, parentPanel, jobListPanel, jobPanel, demoPanel;//, buttonPanel;
+    private JPanel panel, parentPanel, jobListPanel, jobPanel, demoPanel;
     private JLabel titleLabel;
     private JLabel demoNameLabel, demoRaceLabel, demoAgeLabel, demoAddressLabel, demoContactInfoLabel;
-    private JButton backButton; //, editButton, deleteButton;
+    private JButton backButton;
     private List<String> pastJobs, skills, talents;
     private JobHistory jobHistory = new JobHistory();
     private Employee emp;
     private JTextArea pastTextArea, currTextArea, pastTimeTextArea, currTimeTextArea, skillTextArea, talentTextArea;
-    private Dimension dimension = new Dimension(450, 100);
-    private HoldFont hold = new HoldFont();
-    private Font font = hold.getTextFont();
+    private Dimension dimension = new Dimension(200, 100);
+    private RepeatFormat repeat = new RepeatFormat();
+    private Font font = repeat.getTextFont();
+    private WriteJobSatisfactionGUI writeJob;
+    private Color themeBlue = Color.decode("#2A5490"); // Sea Fun theme color
 
     PersonalInformationGUI(JPanel parentPanel, Employee emp) 
     {
         this.parentPanel = parentPanel;
         this.emp = emp;
-
     }
 
     public JPanel createPanel() 
     {
         panel = new JPanel(new BorderLayout());
-        panel.setBackground(Color.LIGHT_GRAY);
+        panel.setBackground(Color.WHITE); // Light background for contrast
 
         titleLabel = new JLabel("Personal Information", SwingConstants.CENTER);
-        titleLabel.setFont(hold.getTitleFont());
+        titleLabel.setFont(repeat.getTitleFont());
         panel.add(titleLabel, BorderLayout.NORTH);
 
         jobListPanel = new JPanel(new GridBagLayout());
-        jobListPanel.setBackground(Color.WHITE);
+        jobListPanel.setBackground(Color.WHITE); // White background for job list panel
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(10, 10, 10, 10);
 
@@ -58,9 +58,10 @@ class PersonalInformationGUI
         
         String currentJob = jobHistory.getCurrentJob(id);
 
-        gridBag.gridy = gridBag.gridy + 1;
+        gridBag.gridy = row;
         jobListPanel.add(createCurrJobPanel(currentJob), gridBag);
-        gridBag.gridy++;
+        row++;
+        gridBag.gridy = row;
 
         skills = jobHistory.getSkill(id);
         // Add job panels dynamically
@@ -88,6 +89,8 @@ class PersonalInformationGUI
         panel.add(scrollPane, BorderLayout.CENTER);
 
         backButton = new JButton("Back");
+        backButton.setBackground(themeBlue); // Set the back button background to theme blue
+        backButton.setForeground(Color.WHITE); // Set button text to white
         backButton.addActionListener(e -> showCard("OpenScreen"));
         panel.add(backButton, BorderLayout.SOUTH);
 
@@ -98,21 +101,22 @@ class PersonalInformationGUI
     {
         jobPanel = new JPanel(new GridBagLayout());
         jobPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        jobPanel.setBackground(Color.ORANGE);
+        jobPanel.setBackground(Color.ORANGE); // Change to a more neutral color for job panel
 
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(5, 5, 5, 5);
         String past[] = job.split(":");
+        pastTextArea = new JTextArea(2, 18);
+        pastTextArea.setLineWrap(true);
+        pastTextArea.setFont(font);
+        pastTextArea.setWrapStyleWord(true);
+        pastTextArea.setEditable(false);
+        pastTextArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        pastTextArea.setPreferredSize(dimension);
 
         if(past.length > 2)
         {
-            pastTextArea = new JTextArea(past[0]);
-            pastTextArea.setFont(font);
-            pastTextArea.setLineWrap(true);
-            pastTextArea.setWrapStyleWord(true);
-            pastTextArea.setEditable(false);
-            pastTextArea.setPreferredSize(dimension);
-            pastTextArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            pastTextArea.setText(past[0]);
             gridBag.gridx = 0;
             gridBag.gridy = 0;
             jobPanel.add(pastTextArea, gridBag);
@@ -122,19 +126,18 @@ class PersonalInformationGUI
             LocalDate startDate = LocalDate.parse(past[1].trim(), formatter);
             LocalDate endDate = LocalDate.parse(past[2].trim(), formatter);
     
-            pastTimeTextArea = new JTextArea("Time in job - " + getDateDifference(startDate, endDate));
-            pastTimeTextArea.setFont(font);
-            gridBag.gridy = 1;
-            jobPanel.add(pastTimeTextArea, gridBag); 
+            pastTextArea.append("\nTime in job - " + repeat.getDateDifference(startDate, endDate));
+            jobPanel.add(pastTextArea, gridBag); 
         }
         else
         {
-            pastTextArea = new JTextArea(past[0]);
+            pastTextArea.setText(past[0]);
             pastTextArea.setFont(font);
             gridBag.gridx = 0;
             gridBag.gridy = 0;
             jobPanel.add(pastTextArea, gridBag);
         }
+
         return jobPanel;
     }
 
@@ -148,10 +151,10 @@ class PersonalInformationGUI
         gridBag.insets = new Insets(5, 5, 5, 5);
         String current[] = job.split(":");
 
-        currTextArea = new JTextArea(current[0]);
+        currTextArea = new JTextArea(2, 18);
+        currTextArea.setText(current[0]);
         currTextArea.setFont(font);
         currTextArea.setLineWrap(true);
-        currTextArea.setWrapStyleWord(true);
         currTextArea.setEditable(false);
         currTextArea.setPreferredSize(dimension);
         currTextArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -165,11 +168,10 @@ class PersonalInformationGUI
             LocalDate startDate = LocalDate.parse(current[1].trim(), formatter);
             LocalDate endDate = LocalDate.now();
     
-            currTimeTextArea = new JTextArea("Time in job - " + getDateDifference(startDate, endDate));
-            currTimeTextArea.setFont(font);
-            gridBag.gridy = 1;
-            jobPanel.add(currTimeTextArea, gridBag);
+            currTextArea.append("\nTime in job - " + repeat.getDateDifference(startDate, endDate));
         }
+
+        jobPanel.add(currTextArea, gridBag);
 
         return jobPanel;
     }
@@ -183,12 +185,17 @@ class PersonalInformationGUI
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(5, 5, 5, 5);
 
-        skillTextArea = new JTextArea(skill);
+        skillTextArea = new JTextArea(2, 18);
+        skillTextArea.setLineWrap(true);
         skillTextArea.setFont(font);
+        skillTextArea.setWrapStyleWord(true);
+        skillTextArea.setEditable(false);
+        skillTextArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        skillTextArea.setPreferredSize(dimension);
+        skillTextArea.setText(skill);
         gridBag.gridx = 0;
         gridBag.gridy = 0;
         jobPanel.add(skillTextArea, gridBag);
-
 
         return jobPanel;
     }
@@ -202,8 +209,14 @@ class PersonalInformationGUI
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(5, 5, 5, 5);
 
-        talentTextArea = new JTextArea(talent);
+        talentTextArea = new JTextArea(2, 18);
+        talentTextArea.setLineWrap(true);
         talentTextArea.setFont(font);
+        talentTextArea.setWrapStyleWord(true);
+        talentTextArea.setEditable(false);
+        talentTextArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        talentTextArea.setPreferredSize(dimension);
+        talentTextArea.setText(talent);
         gridBag.gridx = 0;
         gridBag.gridy = 0;
         jobPanel.add(talentTextArea, gridBag);
@@ -211,144 +224,49 @@ class PersonalInformationGUI
         return jobPanel;
     }
 
-    public static String getDateDifference(LocalDate date1, LocalDate date2) 
-    {
-        // Compare the dates and calculate the difference
-        if (date1.getYear() != date2.getYear()) 
-        {
-            // If the years are different, return the difference in years
-            long yearsDifference = ChronoUnit.YEARS.between(date1, date2);
-            return yearsDifference + " year(s)";
-        } 
-        else if (date1.getMonthValue() != date2.getMonthValue()) 
-        {
-            // If the years are the same but months are different, return the difference in months
-            long monthsDifference = ChronoUnit.MONTHS.between(date1, date2);
-            return monthsDifference + " month(s)";
-        } 
-        else 
-        {
-            // If the years and months are the same but days are different, return the difference in days
-            long daysDifference = ChronoUnit.DAYS.between(date1, date2);
-            return daysDifference + " day(s)";
-        }
-    }
-
     private JPanel createDemographicsPanel()
     {
         demoPanel = new JPanel(new GridBagLayout());
         demoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        demoPanel.setBackground(Color.CYAN);
+        demoPanel.setBackground(themeBlue); // Background color for demographics section
 
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(5, 5, 5, 5);
-        gridBag.anchor = GridBagConstraints.WEST; 
 
-        if (emp != null && emp.getDemographics() != null)
-        {
-            Demographics demo = emp.getDemographics();
-            if(demo.getName() != null)
-            {
-                demoNameLabel = new JLabel(demo.getName());
-            }
-            else
-            {
-                demoNameLabel = new JLabel("No name available");
-            }
-            if(demo.getRace() != null)
-            {
-                demoRaceLabel = new JLabel(demo.getRace());
-            }
-            else
-            {
-                demoRaceLabel = new JLabel("No race available");
-            }
-            int age = demo.getAge();
-            String demoAge = "" + age;
-            if(age != 0)
-            {
-                demoAgeLabel = new JLabel(demoAge);
-            }
-            else
-            {
-                demoNameLabel = new JLabel("No age available");
-            }
-            if(demo.getAddress() != null)
-            {
-                demoAddressLabel = new JLabel(demo.getAddress());
-            }
-            else
-            {
-                demoAddressLabel = new JLabel("No address available");
-            }
-            if(demo.getContactInfo() != null)
-            {
-                demoContactInfoLabel = new JLabel(demo.getContactInfo());
-            }
-            else
-            {
-                demoContactInfoLabel = new JLabel("No contact information available");
-            }
-
-            demoNameLabel.setFont(font);
-            demoRaceLabel.setFont(font);
-            demoAgeLabel.setFont(font);
-            demoAddressLabel.setFont(font);
-            demoContactInfoLabel.setFont(font);
-
-            gridBag.gridx = 0;
-            gridBag.gridy = 0;
-            demoPanel.add(demoNameLabel, gridBag);
-            
-            gridBag.gridy = 1;
-            demoPanel.add(demoAgeLabel, gridBag);
-            
-            gridBag.gridy = 2;
-            demoPanel.add(demoRaceLabel, gridBag);
-            
-            gridBag.gridy = 3;
-            demoPanel.add(demoAddressLabel, gridBag);
-            
-            gridBag.gridy = 4;
-            demoPanel.add(demoContactInfoLabel, gridBag);
-        }
-        else
-        {
-            gridBag.gridx = 0;
-            gridBag.gridy = 0;
-            demoNameLabel = new JLabel("No employee information available.");
-            demoPanel.add(demoNameLabel, gridBag);
-        }
-
-        /*buttonPanel = new JPanel(new FlowLayout());
-        editButton = new JButton("Edit");
-        deleteButton = new JButton("Delete");
-
-        editButton.addActionListener(e -> 
-        {
-            // Action for edit button
-            JOptionPane.showMessageDialog(jobPanel, "Edit job: " + job);
-        });
-
-        deleteButton.addActionListener(e -> 
-        {
-            // Action for delete button
-            int response = JOptionPane.showConfirmDialog(jobPanel, "Are you sure you want to delete this job?");
-            if (response == JOptionPane.YES_OPTION) {
-                jobListPanel.remove(jobPanel);
-                jobListPanel.updateUI();
-                jobListPanel.revalidate();
-                jobListPanel.repaint();
-            }
-        });
-
-        buttonPanel.add(editButton);
-        buttonPanel.add(deleteButton);
-    
-        // Add buttonPanel to the jobPanel
-        gridBag.gridx = 1;
+        demoNameLabel = new JLabel("Name: " + emp.getDemographics().getName());
+        demoNameLabel.setFont(font);
+        demoNameLabel.setForeground(Color.WHITE);
+        gridBag.gridx = 0;
         gridBag.gridy = 0;
-        demoPanel.add(buttonPanel, gridBag);*/
+        demoPanel.add(demoNameLabel, gridBag);
+
+        demoRaceLabel = new JLabel("Race: " + emp.getDemographics().getRace());
+        demoRaceLabel.setFont(font);
+          demoRaceLabel.setForeground(Color.WHITE);
+        gridBag.gridx = 0;
+        gridBag.gridy = 1;
+        demoPanel.add(demoRaceLabel, gridBag);
+
+        demoAgeLabel = new JLabel("Age: " + emp.getDemographics().getAge());
+        demoAgeLabel.setFont(font);
+        demoAgeLabel.setForeground(Color.WHITE);
+        gridBag.gridx = 0;
+        gridBag.gridy = 2;
+        demoPanel.add(demoAgeLabel, gridBag);
+
+        demoAddressLabel = new JLabel("Address: " + emp.getDemographics().getAddress());
+        demoAddressLabel.setFont(font);
+        demoAddressLabel.setForeground(Color.WHITE);
+        gridBag.gridx = 0;
+        gridBag.gridy = 3;
+        demoPanel.add(demoAddressLabel, gridBag);
+
+        demoContactInfoLabel = new JLabel("Contact Info: " + emp.getDemographics().getContactInfo());
+        demoContactInfoLabel.setFont(font);
+        demoContactInfoLabel.setForeground(Color.WHITE);
+        gridBag.gridx = 0;
+        gridBag.gridy = 4;
+        demoPanel.add(demoContactInfoLabel, gridBag);
 
         return demoPanel;
     }

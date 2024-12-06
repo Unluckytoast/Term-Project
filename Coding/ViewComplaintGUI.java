@@ -1,173 +1,148 @@
 import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import javax.swing.*;
 
-public class ViewComplaintGUI implements ActionListener 
+public class ViewComplaintGUI
 {
-    private JPanel parentPanel, panel, searchBarPanel;
-    private JLabel titleLabel;
-    private JButton backButton, searchButton, selectButton;
+    private JPanel parentPanel, panel, formPanel;
     private Employee emp;
+    private JButton backButton, viewButton;
+    private JLabel titleLabel, idLabel;
+    private JTextField idField;
+    private JTextArea detailsArea;
 
-    ViewComplaintGUI(JPanel parentPanel, Employee emp) 
+    public ViewComplaintGUI(JPanel parentPanel, Employee emp) 
     {
         this.parentPanel = parentPanel;
         this.emp = emp;
     }
 
     public JPanel createPanel() {
-        panel = new JPanel(new GridBagLayout()); // Changed to GridBagLayout
-        panel.setBackground(Color.LIGHT_GRAY);
+        panel = new JPanel(new BorderLayout());
+        panel.setBackground(Color.WHITE); // Sea Fun background
 
-        GridBagConstraints gridBag = new GridBagConstraints();
-        gridBag.insets = new Insets(10, 10, 10, 10); // Padding between components
-        gridBag.fill = GridBagConstraints.HORIZONTAL;
-
-        // Title Label
+        // Title label
         titleLabel = new JLabel("View Complaints", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setFont(new Font("Georgia", Font.BOLD, 20));
+    
+        panel.add(titleLabel, BorderLayout.NORTH);
+
+        // Form content
+        formPanel = new JPanel(new GridBagLayout());
+        formPanel.setBackground(Color.WHITE);  // Sea Fun background
+        GridBagConstraints gridBag = new GridBagConstraints();
+        gridBag.insets = new Insets(10, 10, 10, 10);
+        // Input field for Employee ID
+        idLabel = new JLabel("Employee ID:");
+        idLabel.setFont(new Font("Georgia", Font.PLAIN, 16));
+    
         gridBag.gridx = 0;
         gridBag.gridy = 0;
-        gridBag.gridwidth = 2; // Spanning across 2 columns
-        panel.add(titleLabel, gridBag);
+        formPanel.add(idLabel, gridBag);
 
-        // Add search bar
-        searchBarPanel = createSearchBar();
+        idField = new JTextField(15);
+        idField.setFont(new Font("Georgia", Font.PLAIN, 16));
+        gridBag.gridx = 1;
+        formPanel.add(idField, gridBag);
+
+        // Display area for complaint details
+        detailsArea = new JTextArea(27, 27);
+        detailsArea.setFont(new Font("Georgia", Font.PLAIN, 16));
+        detailsArea.setEditable(false);
+        detailsArea.setLineWrap(true);
+        JScrollPane scrollPane = new JScrollPane(detailsArea);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         gridBag.gridx = 0;
         gridBag.gridy = 1;
-        gridBag.gridwidth = 2; // Spanning across 2 columns
-        panel.add(searchBarPanel, gridBag);
+        gridBag.gridwidth = 2;
+        formPanel.add(scrollPane, gridBag);
 
-        // Scroll Pane for complaint content
-        JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        // Button to view employee complaints
+        viewButton = new JButton("View Employee Complaints");
+        viewButton.setFont(new Font("Georgia", Font.PLAIN, 16));
+        viewButton.setBackground(Color.decode("#2A5490"));  // Sea Fun button color
+        viewButton.setForeground(Color.WHITE);  // White text
+        viewButton.setFocusPainted(false);
+        viewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String employeeId = idField.getText().trim();
+                if (employeeId.isEmpty()) {
+                    JOptionPane.showMessageDialog(panel, "Please enter an Employee ID.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                String result = readEmployeeId(employeeId);
+                if (result.isEmpty()) {
+                    detailsArea.setText("No complaint records found for Employee ID: " + employeeId);
+                } else {
+                    detailsArea.setText(result);
+                }
+            }
+        });
         gridBag.gridx = 0;
         gridBag.gridy = 2;
-        gridBag.gridwidth = 2; // Spanning across 2 columns
-        gridBag.weightx = 1.0; // Allow resizing horizontally
-        gridBag.weighty = 1.0; // Allow resizing vertically
-        gridBag.fill = GridBagConstraints.BOTH; // Stretch in both directions
-        panel.add(scrollPane, gridBag);
+        gridBag.gridwidth = 2;
+        formPanel.add(viewButton, gridBag);
 
-        // Back Button
+        panel.add(formPanel, BorderLayout.CENTER);
+
+        // Back button with Sea Fun theme
         backButton = new JButton("Back");
-        backButton.addActionListener(e -> showCard("OpenScreen"));
-        gridBag.gridx = 1; // Position in the second column
-        gridBag.gridy = 3;
-        gridBag.gridwidth = 1; // Single column
-        gridBag.weightx = 0; // No resizing for the button
-        gridBag.weighty = 0;
-        gridBag.anchor = GridBagConstraints.LINE_END; // Align to the right
-        panel.add(backButton, gridBag);
+        backButton.setFont(new Font("Georgia", Font.BOLD, 16));
+        backButton.setBackground(Color.decode("#2A5490"));  // Sea Fun button color
+        backButton.setForeground(Color.WHITE);  // White text
+        backButton.setFocusPainted(false);
+        backButton.addActionListener(e -> showCard("ViewFeedback"));
+        panel.add(backButton, BorderLayout.SOUTH);
 
         return panel;
     }
 
-    private JPanel createSearchBar() {
-        JPanel searchPanel = new JPanel();
-        searchPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        searchPanel.setBackground(Color.LIGHT_GRAY);
-
-        // Search field
-        JTextField searchField = new JTextField(20);
-
-        // Dropdown for suggestions
-        JComboBox<String> suggestionsDropdown = new JComboBox<>();
-        suggestionsDropdown.setEditable(false);
-        suggestionsDropdown.setVisible(false);
-
-        // Mock data for suggestions //CHANGE
-        List<String> mockData = new ArrayList<>();
-        mockData.add("Complaint 1");
-        mockData.add("Complaint 2");
-        mockData.add("Customer Service Issue");
-        mockData.add("Technical Support Query");
-        mockData.add("Comtent");
-
-
-        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-        suggestionsDropdown.setModel(model);
-
-        // Search button
-        searchButton = new JButton("Search");
-        selectButton = new JButton("Select");
-
-        // Add components to the panel
-        searchPanel.add(new JLabel("Search:"));
-        searchPanel.add(searchField);
-        searchPanel.add(suggestionsDropdown); // Add dropdown to the panel
-        searchPanel.add(searchButton);
-        searchPanel.add(searchButton);
-
-        // Action listener to handle dynamic suggestions
-        searchField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                String query = searchField.getText().trim().toLowerCase();
-                model.removeAllElements(); // Clear the dropdown model
-                boolean found = false;
-                for (String item : mockData) {
-                    if (item.toLowerCase().contains(query)) {
-                        model.addElement(item); // Add matching items
-                        found = true;
-                    }
+    private String readEmployeeId(String employeeId) {
+        File file = new File("Complaints.txt");
+        StringBuilder result = new StringBuilder();
+    
+        // Check if the file exists
+        if (!file.exists()) {
+            return "No complaints available.";
+        }
+    
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            boolean found = false;
+    
+            // Read each line from the file
+            while ((line = reader.readLine()) != null) {
+                String[] employeeData = line.split(","); // Split line by commas
+                if (employeeData[0].trim().equals(employeeId)) { // Check if first element matches employee ID
+                    found = true;
+                    result.append("Employee ID: ").append(employeeData[0]).append("\n");
+                    result.append("Complaint: ").append(employeeData[1]).append("\n");
+                    result.append("\n");
                 }
-                suggestionsDropdown.setVisible(found); // Show if matches exist
             }
-        });
-        
-
-        // Action listener for dropdown selection
-        suggestionsDropdown.addActionListener(e -> 
-        {
-            // Ensure it's a user-initiated selection and not programmatic changes
-            if (suggestionsDropdown.isPopupVisible() && suggestionsDropdown.getSelectedItem() != null) 
-            { 
-                searchField.setText(suggestionsDropdown.getSelectedItem().toString()); // Set selected item to search field
-                suggestionsDropdown.setVisible(false); // Hide dropdown after selection
+    
+            if (!found) {
+                return ""; // No records found
             }
-        });
-
-        // Action listener for the "Select" button
-        selectButton.addActionListener(e -> 
-        {
-            String selectedItem = (String) suggestionsDropdown.getSelectedItem();
-            if (selectedItem != null) 
-            {
-                searchField.setText(selectedItem); // Set selected item to search field
-                suggestionsDropdown.setVisible(false); // Hide dropdown after selection
-            } 
-            else 
-            {
-            JOptionPane.showMessageDialog(panel, "Please select an item from the dropdown", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        });
-
-        // Add action listener to handle search
-        ActionListener searchAction = e -> 
-        {
-            String query = searchField.getText().trim();
-            if (!query.isEmpty()) {
-                JOptionPane.showMessageDialog(panel, "You searched for: " + query);
-            } else {
-                JOptionPane.showMessageDialog(panel, "Search query cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        };
-
-        // Attach the action listener to the button and field
-        searchButton.addActionListener(searchAction);
-        searchField.addActionListener(searchAction);
-
-        return searchPanel;
+    
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Error reading the file.";
+        }
+    
+        return result.toString();
     }
 
-    private void showCard(String card) {
+    private void showCard(String card)
+    {
         CardLayout cl = (CardLayout) parentPanel.getLayout();
         cl.show(parentPanel, card);
     }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {}
 }

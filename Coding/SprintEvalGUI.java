@@ -1,7 +1,5 @@
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
@@ -11,10 +9,13 @@ class SprintEvalGUI
 {
     private JPanel panel, parentPanel, evalPanel, employeeEvalPanel;
     private Employee emp;
-    private JLabel evalLabel, ratingLabel, noInfoFoundLabel;
+    private JLabel evalLabel, ratingLabel, noInfoFoundLabel, empIdLabel;
     private JTextArea commentTextArea;
     private List<String> evaluations;
     private Dimension dimension;
+    private JButton backButton;
+    private RepeatFormat repeat = new RepeatFormat();
+    private Font labelFont = repeat.getTextFont();
 
     SprintEvalGUI(JPanel parentPanel, Employee emp) 
     {
@@ -25,56 +26,68 @@ class SprintEvalGUI
     public JPanel createPanel() 
     {
         panel = new JPanel(new BorderLayout());
-        panel.setBackground(Color.CYAN);
+        panel.setBackground(Color.WHITE);
 
         JLabel titleLabel = new JLabel("Sprint Evaluation", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 40));
+        titleLabel.setFont(repeat.getTitleFont());
         panel.add(titleLabel, BorderLayout.NORTH);
-        
-        GridBagConstraints gridBag = new GridBagConstraints();
-        gridBag.insets = new Insets(10, 10, 10, 10);
 
-        evaluations = getSprintEvaluationsForLoggedInEmployee();
+        // Container for evaluations with a scroll pane
+        JPanel containerPanel = new JPanel();
+        containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
 
-        int row = 0;
-        employeeEvalPanel = new JPanel(new GridBagLayout());
+        // Modify this method to show evaluations based on department
+        evaluations = getSprintEvaluations();
 
-        for(String eval: evaluations)
-        {
-            System.out.println(eval);
-            gridBag.gridx = 0;
-            gridBag.gridy = row;
-            employeeEvalPanel.add(createEvalForEmployee(eval), gridBag);
-            row++;
+        if (evaluations.isEmpty()) {
+            noInfoFoundLabel = new JLabel("No evaluations found for " + emp.getDemographics().getName());
+            noInfoFoundLabel.setFont(labelFont);
+            containerPanel.add(noInfoFoundLabel);
+        } else {
+            for (String eval : evaluations) 
+            {
+                containerPanel.add(createEvalForEmployee(eval));
+            }
         }
 
-        JButton backButton = new JButton("Back");
+        // Add the container panel to a scroll pane for better scrolling functionality
+        JScrollPane scrollPane = new JScrollPane(containerPanel);
+        scrollPane.setPreferredSize(new Dimension(500, 400)); // Set preferred size for scroll pane
+
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        backButton = new JButton("Back");
+        backButton.setFont(labelFont);
+        backButton.setBackground(Color.decode("#2A5490"));  // Sea Fun button color
+        backButton.setForeground(Color.WHITE);  // White text
+        backButton.setFocusPainted(false);
         backButton.addActionListener(e -> showCard("OpenScreen"));
         panel.add(backButton, BorderLayout.SOUTH);
-
-        panel.add(employeeEvalPanel, BorderLayout.CENTER);
 
         return panel;
     }
 
     private JPanel createEvalForEmployee(String eval)
     {
-        evalPanel = new JPanel(new GridBagLayout());
+        evalPanel = new JPanel();
+        evalPanel.setLayout(new BoxLayout(evalPanel, BoxLayout.Y_AXIS));
         evalPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        evalPanel.setBackground(Color.GREEN);
+        evalPanel.setBackground(Color.WHITE);
 
-        Border coloredBorder = BorderFactory.createLineBorder(Color.RED, 3);
+        Border coloredBorder = BorderFactory.createLineBorder(Color.decode("#2a5490"), 3);
         evalPanel.setBorder(coloredBorder);
 
-        GridBagConstraints gridBag = new GridBagConstraints();
-        gridBag.insets = new Insets(5, 5, 5, 5);
-        Font labelFont = new Font("Georgia", Font.PLAIN, 24);
-
         String[] parts = eval.split(",");
-        if (parts.length >= 2)
+        if (parts.length >= 3)
         {
-            String comment = parts[0].trim();
-            String rating = parts[1].trim();
+            String empId = parts[0].trim();  // Extract Employee ID
+            String comment = parts[1].trim();
+            String rating = parts[2].trim();
+
+            // Display the Employee ID who wrote the evaluation
+            empIdLabel = new JLabel("Written by: " + empId);
+            empIdLabel.setFont(labelFont);
+            evalPanel.add(empIdLabel);
 
             commentTextArea = new JTextArea("Comment: " + comment);
             commentTextArea.setFont(labelFont);
@@ -83,32 +96,26 @@ class SprintEvalGUI
             commentTextArea.setEditable(false); // Make it read-only
             commentTextArea.setPreferredSize(new Dimension(400, 100)); // Set width and dynamic height
             commentTextArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-            gridBag.gridx = 0;
-            gridBag.gridy = 0;
-            evalPanel.add(commentTextArea, gridBag);
+            evalPanel.add(commentTextArea);
 
             ratingLabel = new JLabel("Rating: " + rating);
             ratingLabel.setFont(labelFont);
-            gridBag.gridy = 1;
-            evalPanel.add(ratingLabel, gridBag);
+            evalPanel.add(ratingLabel);
+
+            evalPanel.add(Box.createVerticalStrut(10)); // Add some space between evaluations
         }
         else
         {
             noInfoFoundLabel = new JLabel("No sprint evaluation found for " + emp.getDemographics().getName());
             noInfoFoundLabel.setFont(labelFont);
-            gridBag.gridx = 0;
-            gridBag.gridy = 0;
-            evalPanel.add(noInfoFoundLabel, gridBag);
+            evalPanel.add(noInfoFoundLabel);
         }
-
-        JScrollPane scroll = new JScrollPane();
-        evalPanel.add(scroll);
 
         return evalPanel;
     }
 
-    // View sprint evaluations for the logged-in employee and return them as a list
-    private List<String> getSprintEvaluationsForLoggedInEmployee() 
+    // Fetch sprint evaluations based on the department
+    private List<String> getSprintEvaluations() 
     {
         String employeeId = emp.getId();
         List<String> evaluations = new ArrayList<>();
@@ -119,10 +126,18 @@ class SprintEvalGUI
             while ((line = reader.readLine()) != null)
             {
                 String[] parts = line.split(",");
-                if (parts.length >= 3 && parts[0].equals(employeeId)) 
+                if (parts.length >= 3)
                 {
-                    // Add evaluation details (comment and rating) to the list
-                    evaluations.add(parts[1].trim() + ", " + parts[2].trim());
+                    if (emp.getDepartment().equalsIgnoreCase("HR") || emp.getJobTitle().equalsIgnoreCase("Supervisor")) 
+                    {
+                        // Supervisor can see all evaluations
+                        evaluations.add(line);  // Include the full line (ID, comment, rating)
+                    }
+                    else if (parts[0].equals(employeeId)) 
+                    {
+                        // Regular employee sees only their own evaluations
+                        evaluations.add(line);  // Include the full line (ID, comment, rating)
+                    }
                 }
             }
         }
@@ -131,22 +146,13 @@ class SprintEvalGUI
             System.out.println("Error reading sprint evaluations.");
             e.printStackTrace();
         }
-        if(evaluations.isEmpty())
-        {
-            evaluations.add("No evaluations found for " + emp.getDemographics().getName());
-        }
-        return evaluations; // Return the list of evaluations
-    }
 
+        return evaluations;
+    }
 
     private void showCard(String card) 
     {
         CardLayout cl = (CardLayout) parentPanel.getLayout();
         cl.show(parentPanel, card);
-    }
-
-    public void setEvalEmployee(Employee emp) 
-    {
-        this.emp = emp;
     }
 }

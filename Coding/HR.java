@@ -12,12 +12,12 @@ public class HR {
     }
 
     // Add a new employee
-    public void addEmployee(Demographics demographics, String jobTitle, String department) {
+    public String addEmployee(Demographics demographics, String jobTitle, String department) {
         String id = String.valueOf((int) (Math.random() * 10000)); // Generate random employee ID
         Employee newEmployee = new LowerLevelEmployee(id, demographics, jobTitle, department);
         employees.add(newEmployee);
         saveEmployees();
-        System.out.println("Employee added with ID: " + id);
+        return id;
     }
 
     // Fire an employee

@@ -1,5 +1,11 @@
-4530,Kate Denson,White,25,123 Rainbow Rd.,000-0000,Supervisor,HR
+4530,Kate Denson,White,25,123 Roast Rd.,000-0000,Supervisor,HR
 6479,James Sunderland,White,45,123 IDK Rd.,555-6878,Handyman,HR
-456,Jane Ramero,Hispanic,47,145 Road Street,555-6879,Host,Talk Show
 2895,Sheva Alamar,Black,25,234 West Point St.,270-999-99889,Supervisor,HR
-345,Jake Park,Japanese,21,234 East Point St.,270-888-8899,Supervisor,HR
+345,Jake Park,Japanese,21,234 East Point St.,270-888-8899,Supervisor,Bleh
+456,Alistar Therin, White,22,123 Ferelden St.,270-917-4180,Supervisor,Grey Wardens
+2182,Anders Hawke,White,32,121 Vigils Keep Rd,000-000-0000,Doctor,Medical
+9861,Jane Romero,Hispanic,45,123 road road,270 899 8999,Community Liaison,PR
+418,Claire Redfield,White,19,123 Raccon City St,2700000000,Sales Person,Sales
+2020,Cheryl,Mason,19,123 454 rd,2993459,IDK,IDK
+8791,Dorian Pavus,Middle Eastern,45,34 road street road,270-888-8888,Head Wizard,Wizard
+

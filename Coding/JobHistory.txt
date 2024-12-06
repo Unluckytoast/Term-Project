@@ -1,4 +1,31 @@
-id: 456,
-id: 7277,
-id: 3231,
-id: 7657,
+
+
+id: 2182, CJ: Doctor: 2024/12/05, Skill: Sutures, Talent or Gift: Humor,
+
+id: 1833, CJ: Doctor: 2024/12/05, PJ: Terrorist: 2002/11/05: 2006/03/05, Skill: Sutures, Talent or Gift: Humor,
+
+id: 6468, CJ: Man: 2024/12/05, Skill: Conflict , Talent or Gift: Cooking,
+
+id: 9861, CJ: Community Liaison: 2024/12/05, Skill: Advertising, Talent or Gift: Knife Throwing,
+
+id: 418, CJ: Sales Person: 2024/12/05,
+
+id: 6288, CJ: Sales Person: 2024/12/05,
+
+id: 8661, CJ: efe: 2024/12/05,
+
+id: 5278, CJ: efe: 2024/12/05,
+
+id: 37, CJ: AS: 2024/12/05,
+
+id: 9764, CJ: AS: 2024/12/05,
+
+id: 2246, CJ: AS: 2024/12/05,
+
+id: 5205, CJ: re: 2024/12/05,
+
+id: 2020, CJ: IDK: 2024/12/06,
+
+id: 8791, CJ: Head Wizard: 2024/12/06,
+
+id: 2121, CJ: re: 2024/12/06,

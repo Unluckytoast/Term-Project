@@ -9,6 +9,8 @@ public class WriteSprintEvalGUI
     private SprintEval sprint;
     private JButton backButton;
     private Employee emp;
+    private RepeatFormat repeat = new RepeatFormat();
+    private Font font = repeat.getTextFont();
 
     WriteSprintEvalGUI(JPanel parentPanel, Employee emp)
     {
@@ -19,30 +21,31 @@ public class WriteSprintEvalGUI
     public JPanel createPanel() 
     {
         panel = new JPanel(new BorderLayout());
-        panel.setBackground(new Color(240, 248, 255)); // Alice blue (light blue)
+        panel.setBackground(Color.white); // Alice blue (light blue)
+        panel.setForeground(Color.white); // Alice blue (light blue)
 
         // Title label
         titleLabel = new JLabel("Sprint Evaluation", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setFont(repeat.getTitleFont());
         titleLabel.setForeground(new Color(60, 60, 60));  // Dark gray color for the title
         panel.add(titleLabel, BorderLayout.NORTH);
 
         // GridBagLayout for form content
         formPanel = new JPanel(new GridBagLayout());
-        formPanel.setBackground(new Color(240, 248, 255)); // Same background color
+        formPanel.setBackground(Color.WHITE); // Same background color
 
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(10, 10, 10, 10);
 
         // Add a text area for the evaluation content
         evaluationLabel = new JLabel("Evaluation:");
-        evaluationLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        evaluationLabel.setFont(font);
         gridBag.gridx = 0;
         gridBag.gridy = 0;
         formPanel.add(evaluationLabel, gridBag);
 
         JTextArea evaluationArea = new JTextArea(3, 20);
-        evaluationArea.setFont(new Font("Arial", Font.PLAIN, 16));
+        evaluationArea.setFont(font);
         JScrollPane evaluationScroll = new JScrollPane(evaluationArea);
         gridBag.gridx = 0;
         gridBag.gridy = 1;
@@ -50,7 +53,7 @@ public class WriteSprintEvalGUI
 
         // Add rating panel (with stars)
         ratingLabel = new JLabel("Rating (1-5):");
-        ratingLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        ratingLabel.setFont(font);
         gridBag.gridx = 0;
         gridBag.gridy = 2;
         formPanel.add(ratingLabel, gridBag);
@@ -62,9 +65,9 @@ public class WriteSprintEvalGUI
 
         // Button to save the evaluation
         JButton saveButton = new JButton("Save Evaluation");
-        saveButton.setFont(new Font("Arial", Font.BOLD, 16));
-        saveButton.setBackground(new Color(255, 215, 0));  // Gold background for save button
-        saveButton.setForeground(Color.BLACK);
+        saveButton.setFont(font);
+        saveButton.setBackground(Color.decode("#2a5490"));  // Gold background for save button
+        saveButton.setForeground(Color.WHITE);
         saveButton.setFocusPainted(false);
         saveButton.addActionListener(new ActionListener() {
             @Override
@@ -75,10 +78,10 @@ public class WriteSprintEvalGUI
                     String evaluationText = evaluationArea.getText();
                     int rating = starPanel.getRating();
                     String supervisorId = emp.getId(); // Example value
-                    String employeeId = evaluationArea.getText(); // Example value
+                 
 
                     // Save the evaluation
-                    SprintEval eval = new SprintEval(supervisorId, employeeId, evaluationText, rating);
+                    SprintEval eval = new SprintEval(supervisorId,evaluationText, rating);
                     eval.saveEvaluation();
 
                     JOptionPane.showMessageDialog(panel, "Evaluation saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -103,9 +106,9 @@ public class WriteSprintEvalGUI
 
         // Back Button
         backButton = new JButton("Back");
-        backButton.setFont(new Font("Arial", Font.BOLD, 16));
-        backButton.setBackground(new Color(211, 211, 211)); // Light gray for back button
-        backButton.setForeground(Color.BLACK);
+        backButton.setFont(font);
+        backButton.setBackground(Color.decode("#2A5490")); // Light gray for back button
+        backButton.setForeground(Color.WHITE);
         backButton.setFocusPainted(false);
         backButton.addActionListener(e -> showCard("OpenScreen"));
         panel.add(backButton, BorderLayout.SOUTH);
@@ -122,6 +125,7 @@ public class WriteSprintEvalGUI
         private final int STAR_COUNT = 5;
 
         // Gold color for filled stars, gray for unfilled
+
         private static final Color GOLD_COLOR = new Color(255, 215, 0);  // Gold
         private static final Color GRAY_COLOR = Color.GRAY;              // Empty stars
 
@@ -129,7 +133,7 @@ public class WriteSprintEvalGUI
         {
             setPreferredSize(new Dimension(250, 50));
             setLayout(new FlowLayout());
-            setBackground(new Color(240, 248, 255));  // Light blue background
+            setBackground(Color.WHITE);  // Light blue background
             addMouseListener(new java.awt.event.MouseAdapter()
             {
                 @Override

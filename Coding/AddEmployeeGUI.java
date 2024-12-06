@@ -19,8 +19,8 @@ public class AddEmployeeGUI
     private Employee emp, newEmployee;
     private Demographics newDemo;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-    private HoldFont hold = new HoldFont();
-    private Font font = hold.getTextFont();
+    private RepeatFormat repeat = new RepeatFormat();
+    private Font font = repeat.getTextFont();
     private GridBagConstraints gridBag = new GridBagConstraints();
     
     public AddEmployeeGUI(JPanel parentPanel, Employee emp) 
@@ -32,10 +32,10 @@ public class AddEmployeeGUI
     public JPanel createPanel()
     {
         panel = new JPanel(new BorderLayout());
-        panel.setBackground(Color.YELLOW);
+        panel.setBackground(Color.WHITE);
 
         titleLabel = new JLabel("Manage Employees", SwingConstants.CENTER);
-        titleLabel.setFont(hold.getTitleFont());
+        titleLabel.setFont(repeat.getTitleFont());
         panel.add(titleLabel, BorderLayout.NORTH);
         gridBag.insets = new Insets(10, 10, 10, 10);
 
@@ -185,6 +185,8 @@ public class AddEmployeeGUI
         //addEmpPanel.add(addSkillButton, gridBag);
 
         saveButton = new JButton("Save");
+        saveButton.setBackground(Color.decode("#2A5490"));
+        saveButton.setForeground(Color.WHITE);
         saveButton.setFont(font);
         saveButton.addActionListener(e -> 
         {
@@ -318,7 +320,7 @@ public class AddEmployeeGUI
         addEmpPanel.add(saveButton, gridBag);
 
         messageLabel = new JLabel("");
-        messageLabel.setForeground(Color.RED);
+        messageLabel.setForeground(Color.decode("#2A5490"));
         messageLabel.setFont(font);
 
         gridBag.gridx = 0;
@@ -335,17 +337,22 @@ public class AddEmployeeGUI
         panel.add(scrollPane, BorderLayout.CENTER);
                         
         backButton = new JButton("Back");
-        backButton.addActionListener(e -> hold.showCard(parentPanel,"OpenScreen"));
-                
+        backButton.setFont(font);
+        backButton.setBackground(Color.decode("#2A5490"));  // Sea Fun button color
+        backButton.setForeground(Color.WHITE);  // White text
+        backButton.setFocusPainted(false);
+        backButton.addActionListener(e -> showCard("ManageEmps"));
         panel.add(backButton, BorderLayout.SOUTH);
-
+  
+      
+  
         return panel;
     }
                 
     private JPanel addPastJobPanel()
     {
         pastPanel = new JPanel(new GridBagLayout());
-        pastPanel.setBackground(Color.MAGENTA);
+        pastPanel.setBackground(Color.WHITE);
         GridBagConstraints pastConstraints = new GridBagConstraints();
 
         pastConstraints.gridx = 0;
@@ -364,7 +371,7 @@ public class AddEmployeeGUI
     private JPanel addSkillPanel()
     {
         skillPanel = new JPanel(new GridBagLayout());
-        skillPanel.setBackground(Color.BLUE);
+        skillPanel.setBackground(Color.decode("#2A5490"));
         GridBagConstraints skConstraint = new GridBagConstraints();
         
         skConstraint.gridx = 0;
@@ -462,6 +469,11 @@ public class AddEmployeeGUI
         }
 
         return false;
+    }
+    private void showCard(String card)
+    {
+        CardLayout cl = (CardLayout) parentPanel.getLayout();
+        cl.show(parentPanel, card);
     }
 }
 

@@ -15,7 +15,7 @@ public class HRAppTest {
         boolean exit = false;
 
         // Login process
-        loggedInEmployee = login(hr, scanner);
+        loggedInEmployee = login(hr, "456");
         // Initialize job satisfaction for the logged-in employee
         jobSatisfaction = loggedInEmployee.getJobSatisfaction();
 
@@ -116,27 +116,7 @@ public class HRAppTest {
     }
 
     // Login method
-    /*private static Employee login(HR hr, Scanner scanner) {
-        System.out.print("Enter your Employee ID to log in: ");
-        String employeeId = scanner.nextLine();
-
-        Employee employee = hr.getEmployees().stream()
-            .filter(emp -> emp.getId().equals(employeeId))
-            .findFirst()
-            .orElse(null);
-
-        if (employee == null) {
-            System.out.println("Invalid Employee ID.");
-        }
-
-        return employee;
-    }*/
-
-    //I changed the above methdo to take in a different parameter
-    //I used the changed method in the Test class, if you know a 
-    //different way that works to use your method that would work as well
-    public static Employee login(HR hr, String id) 
-    {
+    public static Employee login(HR hr, String id) {
         System.out.print("Enter your Employee ID to log in: ");
         String employeeId = id;
 

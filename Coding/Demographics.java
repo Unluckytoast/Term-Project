@@ -17,34 +17,34 @@ public class Demographics implements Serializable {
         this.contactInfo = contactInfo;
     }
 
-    // age validator 
+// age validator 
     public class AgeValidator {
-        public static boolean isValidAge(int age) {
-            return age >= 18;
-        }
+    public static boolean isValidAge(int age) {
+        return age >= 18;
     }
+}
 
-    //  address validator
-    public class AddressValidator {
-        public static boolean isValidAddress(String address) {
-            if (address == null || address.trim().isEmpty()) {
-                return false;
-            }
-            String addressPattern = "^[\\d]+[\\s]+[a-zA-Z0-9\\s.,'-]+( Apt [\\d]+)?$";
-            return Pattern.matches(addressPattern, address);
+//  address validator
+public class AddressValidator {
+    public static boolean isValidAddress(String address) {
+        if (address == null || address.trim().isEmpty()) {
+            return false;
         }
+        String addressPattern = "^[\\d]+[\\s]+[a-zA-Z0-9\\s.,'-]+( Apt [\\d]+)?$";
+        return Pattern.matches(addressPattern, address);
     }
+}
 
-    //  phone number validator
-    public class PhoneNumberValidator {
-        public static boolean isValidPhoneNumber(String phoneNumber) {
-            if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
-                return false;
-            }
-            String digitsOnly = phoneNumber.replaceAll("[^0-9]", "");
-            return digitsOnly.length() >= 7 && digitsOnly.length() <= 10 && Pattern.matches("[0-9()\\- ]+", phoneNumber);
+//  phone number validator
+public class PhoneNumberValidator {
+    public static boolean isValidPhoneNumber(String phoneNumber) {
+        if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
+            return false;
         }
+        String digitsOnly = phoneNumber.replaceAll("[^0-9]", "");
+        return digitsOnly.length() >= 7 && digitsOnly.length() <= 10 && Pattern.matches("[0-9()\\- ]+", phoneNumber);
     }
+}
 
     // Getters
     public String getName() {

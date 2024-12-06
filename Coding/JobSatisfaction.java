@@ -46,7 +46,7 @@ public class JobSatisfaction {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("jobsatisfaction.txt", true))) {
             writer.write("Employee ID: " + id);
             writer.newLine();
-            writer.write("Rating (1-10): " + rating);
+            writer.write("Rating (1-5): " + rating);
             writer.newLine();
             writer.write("Feedback: " + feedback);
             writer.newLine();
