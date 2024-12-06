@@ -1,0 +1,35 @@
+4530,Kate Denson,White,25,123 Rainbow Rd.,000-0000,Supervisor,HR
+6479,James Sunderland,White,45,123 IDK Rd.,555-6878,Handyman,HR
+456,Jane Ramero,Hispanic,47,145 Road Street,555-6879,Host,Talk Show
+2895,Sheva Alamar,Black,25,234 West Point St.,270-999-99889,Supervisor,HR
+345,Jake Park,Japanese,21,234 East Point St.,270-888-8899,Supervisor,Bleh
+5240,Jessica,Opt Out,24,123 Babam,1234567,HR Lady,HR
+6989,jkjkk,fdafd,34,34 fkdsl,2342784,HR,Haha
+8552,dafdf,dafefa,35,34 fkdsl,2342784,HR,Haha
+1769,fsfaf,eafa,23,34 dsfsd,12345678,HR,hehe
+5575,fsfaf,eafa,23,34 dsfsd,12345678,HR,hehe
+680,fsdfa,eaf,45,34 vxvds,12345678,HR,jfjf
+5982,fsdfa,eaf,45,34 vxvds,12345678,HR,jfjf
+6873,adfas,sdafa,43,324 dfsfs,987654321,HR,fjkajf
+2703,adfas,sdafa,43,324 dfsfs,987654321,HR,fjkajf
+2799,adfas,sdafa,43,324 dfsfs,987654321,HR,fjkajf
+4305,adfas,sdafa,43,324 dfsfs,987654321,HR,fjkajf
+5579,adfas,sdafa,43,324 dfsfs,987654321,HR,fjkajf
+6771,dsfse,sefsa,54,234 vdvdsfse,9871235,HR,fjkla
+7440,dsfse,sefsa,54,234 vdvdsfse,9871235,HR,fjkla
+933,fdsfea,aefa,24,314 djakf,12309756,HR,ejkafdj
+9515,fdsfea,aefa,24,314 djakf,12309756,HR,ejkafdj
+4402,jfkdsaf,eaffd,43,342 jkfldja,12345678,HR,jfd
+9873,jfkdsaf,eaffd,43,342 jkfldja,12345678,HR,jfd
+4237,jfkdsaf,eaffd,43,342 jkfldja,12345678,HR,jfd
+1183,jfkdsaf,eaffd,43,342 jkfldja,12345678,HR,jfd
+7277,afedf,aefda,43,131 fdjskal,12345678,HR,ajfa
+3231,asfeds,eafdasfd,23,3214 dsakfl,0987654332,Janitor,HR
+7657,jhkhjn,jklhjb,43,456 kjhjkhl,2345678909,Party Pooper,HR
+6309,nkmn;kfl;a,rdsafd,54,3412 fjkdsalfj,3143144,Goop,Lavalamp
+6336,fasfdasfd,aefasd,34,2342 kfjdlsfjakl,1234567890,Yee Haw,Woah Woah
+3671,kfasjfkl;fjd,adfakdf,56,432 jkdsjfal,1234567890,dajklfadj,kfaddf
+1755,kfasjfkl;fjd,adfakdf,56,432 jkdsjfal,1234567890,dajklfadj,kfaddf
+5677,kfasjfkl;fjd,adfakdf,56,432 jkdsjfal,1234567890,dajklfadj,kfaddf
+7994,kldsfjdsa,kdsajlfdjak,54,234 jfkdsafjl,1324789,kdfskjlfs,jkfdskj
+7239,kjljdsaf,dafdasf,43,432 ksdalfkjl,3241289,kdsalfj,jaksf
