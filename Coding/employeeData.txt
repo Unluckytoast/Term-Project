@@ -8,4 +8,3 @@
 418,Claire Redfield,White,19,123 Raccon City St,2700000000,Sales Person,Sales
 2020,Cheryl,Mason,19,123 454 rd,2993459,IDK,IDK
 8791,Dorian Pavus,Middle Eastern,45,34 road street road,270-888-8888,Head Wizard,Wizard
-

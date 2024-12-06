@@ -42,7 +42,7 @@ public class AddEmployeeGUI
         addEmpPanel = new JPanel(new GridBagLayout());
 
         Dimension dimension = new Dimension(200, 30);
-        nameLabel = new JLabel("Name:");
+        nameLabel = new JLabel("* Name:");
         nameLabel.setFont(font);
         gridBag.gridx = 0;
         gridBag.gridy = 0;
@@ -54,7 +54,7 @@ public class AddEmployeeGUI
         gridBag.gridx = 1;
         addEmpPanel.add(nameText, gridBag);
 
-        raceLabel = new JLabel("Race:");
+        raceLabel = new JLabel("* Race:");
         raceLabel.setFont(font);
         gridBag.gridx = 0;
         gridBag.gridy++;
@@ -66,7 +66,7 @@ public class AddEmployeeGUI
         gridBag.gridx = 1;
         addEmpPanel.add(raceText, gridBag);
 
-        ageLabel = new JLabel("Age:");
+        ageLabel = new JLabel("* Age:");
         ageLabel.setFont(font);
         gridBag.gridx = 0;
         gridBag.gridy++;
@@ -78,7 +78,7 @@ public class AddEmployeeGUI
         gridBag.gridx = 1;
         addEmpPanel.add(ageText, gridBag);
 
-        addressLabel = new JLabel("Address");
+        addressLabel = new JLabel("* Address");
         addressLabel.setFont(font);
         gridBag.gridx = 0;
         gridBag.gridy++;
@@ -90,7 +90,7 @@ public class AddEmployeeGUI
         gridBag.gridx = 1;
         addEmpPanel.add(addressText, gridBag);
 
-        phoneNumberLabel = new JLabel("Phone Number:");
+        phoneNumberLabel = new JLabel("* Phone Number:");
         phoneNumberLabel.setFont(font);
         gridBag.gridx = 0;
         gridBag.gridy++;
@@ -102,7 +102,7 @@ public class AddEmployeeGUI
         gridBag.gridx = 1;
         addEmpPanel.add(phoneNumberText, gridBag);
 
-        currJobDeptLabel = new JLabel("Current Job Department:");
+        currJobDeptLabel = new JLabel("* Current Job Department:");
         currJobDeptLabel.setFont(font);
         gridBag.gridx = 0;
         gridBag.gridy++;
@@ -114,7 +114,7 @@ public class AddEmployeeGUI
         gridBag.gridx = 1;
         addEmpPanel.add(currJobDeptText, gridBag);
 
-        currJobTitleLabel = new JLabel("Current Job Title:");
+        currJobTitleLabel = new JLabel("* Current Job Title:");
         currJobTitleLabel.setFont(font);
         gridBag.gridx = 0;
         gridBag.gridy++;
@@ -136,7 +136,7 @@ public class AddEmployeeGUI
         gridBag.gridx++;
         addEmpPanel.add(pastJobText, gridBag);
 
-        pastJobStartLabel = new JLabel("Past Job Start Date:");
+        pastJobStartLabel = new JLabel("Past Job Start Date: yyyy/MM/dd");
         pastJobStartLabel.setFont(font);
         gridBag.gridx = 0;
         gridBag.gridy++;
@@ -147,7 +147,7 @@ public class AddEmployeeGUI
         gridBag.gridx++;
         addEmpPanel.add(pastJobStartDateText, gridBag);
 
-        pastJobEndLabel = new JLabel("Past Job End Date:");
+        pastJobEndLabel = new JLabel("Past Job End Date: yyyy/MM/dd");
         pastJobEndLabel.setFont(font);
         gridBag.gridx = 0;
         gridBag.gridy++;
@@ -248,7 +248,7 @@ public class AddEmployeeGUI
                                                         if (dateCheck)
                                                         {
                                                             history.addPastJob(id, pastJobText.getText(), pastStartDate, pastEndDate);
-                                                            messageLabel.setText("New Employee with id " + id + "has been saved!");
+                                                            messageLabel.setText("New Employee with id " + id + " has been saved!");
                                                         }
                                                         else
                                                         {
@@ -267,7 +267,7 @@ public class AddEmployeeGUI
                                             }
                                             else
                                             {
-                                                messageLabel.setText("New Employee with id " + id + "has been saved!");  
+                                                messageLabel.setText("New Employee with id " + id + " has been saved!");  
                                             }
                                             if (skillText.getText() != null && !skillText.getText().isEmpty())
                                             {
@@ -319,7 +319,7 @@ public class AddEmployeeGUI
         gridBag.gridy++;
         addEmpPanel.add(saveButton, gridBag);
 
-        messageLabel = new JLabel("");
+        messageLabel = new JLabel("* marks Required Fields");
         messageLabel.setForeground(Color.decode("#2A5490"));
         messageLabel.setFont(font);
 
@@ -343,54 +343,10 @@ public class AddEmployeeGUI
         backButton.setFocusPainted(false);
         backButton.addActionListener(e -> showCard("ManageEmps"));
         panel.add(backButton, BorderLayout.SOUTH);
-  
-      
-  
+
         return panel;
     }
                 
-    private JPanel addPastJobPanel()
-    {
-        pastPanel = new JPanel(new GridBagLayout());
-        pastPanel.setBackground(Color.WHITE);
-        GridBagConstraints pastConstraints = new GridBagConstraints();
-
-        pastConstraints.gridx = 0;
-        pastConstraints.gridy = 0;
-        pastConstraints.insets = new Insets(10, 10, 10, 10);
-
-        pastJobText = new JTextField(15);
-        pastJobText.setFont(font);
-
-        pastPanel.add(pastJobText, pastConstraints);
-
-        return pastPanel;
-
-    }
-
-    private JPanel addSkillPanel()
-    {
-        skillPanel = new JPanel(new GridBagLayout());
-        skillPanel.setBackground(Color.decode("#2A5490"));
-        GridBagConstraints skConstraint = new GridBagConstraints();
-        
-        skConstraint.gridx = 0;
-        skConstraint.gridy = 0;
-        skConstraint.insets = new Insets(10, 10, 10, 10);
-
-        skillText = new JTextField(15);
-        skillText.setFont(font);
-
-        skillPanel.add(skillText, skConstraint);
-
-        return skillPanel;
-    }
-
-    private String messageLabel(String problem)
-    {
-        return "You currently cannot add more than one " + problem + " for a new employee.";
-    }
-
     public static boolean isValidPhoneNumber(String phoneNumber) 
     {
         if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
@@ -476,59 +432,3 @@ public class AddEmployeeGUI
         cl.show(parentPanel, card);
     }
 }
-
-/*
-isPastButtonPressed = false;
-        isSkillButtonPressed = false;
-        isTalentButtonPressed = false;
-
-        addPastJobButton.addActionListener(e -> 
-        {
-            GridBagConstraints pastJobConst = new GridBagConstraints();
-            pastJobConst.insets = new Insets(10, 10, 10, 10);
-
-            if (!isPastButtonPressed)
-            {
-                pastJobConst.gridx = 1;
-                addEmpPanel.add(addPastJobPanel(), pastJobConst);
-                isPastButtonPressed = true;
-                messageLabel.setText("");
-            }
-            else
-            {
-                messageLabel.setText(messageLabel("Past Job"));
-            }
-            addEmpPanel.revalidate();
-            addEmpPanel.repaint();
-        });
-                
-        addEmpPanel.add(addPastJobButton, gridBag);
-                
-        addSkillButton = new JButton("Add Skill:");
-        addSkillButton.setFont(font);
-        gridBag.gridx = 0;
-        gridBag.gridy++;
-                
-        addSkillButton.addActionListener(e -> 
-        {
-            GridBagConstraints skillConstraint = new GridBagConstraints();
-            skillConstraint.gridx = 1;
-            skillConstraint.gridy = gridBag.gridy++;
-            skillConstraint.insets = new Insets(10, 10, 10, 10);
-
-            if (!isSkillButtonPressed)
-            {
-                skillConstraint.gridx = 1;
-                skillConstraint.gridy = gridBag.gridy++;
-                addEmpPanel.add(addSkillPanel(), skillConstraint);
-                isSkillButtonPressed = true;
-                messageLabel.setText("");
-            }
-            else
-            {
-                messageLabel.setText(messageLabel("Skill"));
-            }
-        
-            addEmpPanel.revalidate();
-            addEmpPanel.repaint();
-        });*/
