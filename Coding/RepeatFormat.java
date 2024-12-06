@@ -8,21 +8,26 @@ public class RepeatFormat
 {
     private static Font font; 
     
+    //Getter method to get a set text font
     public Font getTextFont()
     {
         return font = new Font("Georgia", Font.PLAIN, 20);
     }
+    
+    //Getter method to get a set title font
     public Font getTitleFont()
     {
         return font = new Font("Georgia", Font.BOLD, 30);
     }
 
+    //Method to change between panels/cards
     public void showCard(JPanel parentPanel, String card)
     {
         CardLayout cl = (CardLayout) parentPanel.getLayout();
         cl.show(parentPanel, card);
     }
 
+    //Method that returns the difference in dates
     public String getDateDifference(LocalDate date1, LocalDate date2) 
     {
         // Compare the dates and calculate the difference

@@ -2,7 +2,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class Test implements ActionListener, KeyboardFunction {
+public class Test implements ActionListener, KeyboardFunction 
+{
     private JFrame frame;
     private JPanel mainPanel, loginPanel, centerPanel, topPanel; // Container for all screens
     private CardLayout cardLayout;
@@ -60,13 +61,15 @@ public class Test implements ActionListener, KeyboardFunction {
         frame.setVisible(true);
     }
 
-    private JPanel createLoginScreen() {
+    private JPanel createLoginScreen() 
+    {
         loginPanel = new JPanel(new BorderLayout());
         loginPanel.setBackground(Color.WHITE); // Set background to white for Sea Fun theme
 
         topPanel = new JPanel(new BorderLayout());
         topPanel.setOpaque(false);
 
+        //Create a close button in the top corner and add it to the panel
         closeButton = new JButton("X");
         closeButton.setPreferredSize(new Dimension(50, 30));
         closeButton.setFont(font);
@@ -102,7 +105,7 @@ public class Test implements ActionListener, KeyboardFunction {
         gridBag.gridwidth = 2;  // Make the logo span across both columns
         centerPanel.add(logoLabel, gridBag);
 
-        // Username field
+        // Username label
         userLabel = new JLabel("Username:");
         userLabel.setFont(font);
         userLabel.setForeground(Color.WHITE); // White text
@@ -111,6 +114,7 @@ public class Test implements ActionListener, KeyboardFunction {
         gridBag.gridwidth = 1;
         centerPanel.add(userLabel, gridBag);
 
+        // Username text field
         user = new JTextField(15);
         user.setFont(font);
         user.setPreferredSize(new Dimension(200, 30));
@@ -126,7 +130,7 @@ public class Test implements ActionListener, KeyboardFunction {
         gridBag.gridy = 2;
         centerPanel.add(userBlueBlock, gridBag);
 
-        // Password field
+        // Password label
         passwordLabel = new JLabel("Password:");
         passwordLabel.setFont(font);
         passwordLabel.setForeground(Color.WHITE); // White text
@@ -134,6 +138,7 @@ public class Test implements ActionListener, KeyboardFunction {
         gridBag.gridy = 3;
         centerPanel.add(passwordLabel, gridBag);
 
+        // Password field
         password = new JPasswordField(15);
         password.setFont(font);
         password.setPreferredSize(new Dimension(200, 30));
@@ -173,12 +178,21 @@ public class Test implements ActionListener, KeyboardFunction {
         return loginPanel;
     }
 
+    //Method that gets action performed, In this 
+    //instance it checks for the login button being pressed
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == loginButton) {
+    public void actionPerformed(ActionEvent e) 
+    {
+        if (e.getSource() == loginButton) 
+        {
             HR hr = new HR();
             loggedInEmployee = HRAppTest.login(hr, user.getText());
-            if (loggedInEmployee != null) {
+            //Checks to see if the user id entered is a legit id
+            //If it is, it will let them have access to the rest of the panels
+            if (loggedInEmployee != null) 
+            {
+                //Creates new objects that take in the mainPanel and the new instance of
+                //the logged in employee to be used later in the respective classes
                 open = new OpenScreen(mainPanel, loggedInEmployee);
                 person = new PersonalInformationGUI(mainPanel, loggedInEmployee);
                 sprint = new SprintEvalGUI(mainPanel, loggedInEmployee);
@@ -194,6 +208,10 @@ public class Test implements ActionListener, KeyboardFunction {
                 writeSatis = new WriteJobSatisfactionGUI(mainPanel, loggedInEmployee);
                 updateFeedback = new UpdateFeedbackGUI(mainPanel);
                 viewFeedback = new ViewFeedbackGUI(mainPanel);
+
+                //Uses all of the prior objects to call on all of the 
+                //createPanel methods and adds them to the main panel so
+                //that the user can switch between all of them
                 mainPanel.add(open.createPanel(), "OpenScreen");
                 mainPanel.add(person.createPanel(), "PersonalInfoScreen");
                 mainPanel.add(sprint.createPanel(), "SprintEvalScreen");
@@ -201,7 +219,6 @@ public class Test implements ActionListener, KeyboardFunction {
                 mainPanel.add(writeSprint.createPanel(), "WriteSprint");
                 mainPanel.add(complaint.createPanel(), "ViewComplaint");
                 mainPanel.add(view.createPanel(), "EmployeesView");
-
                 mainPanel.add(editEmp.createPanel(!false), "EditEmp");
                 mainPanel.add(addEmp.createPanel(), "AddEmp");
                 mainPanel.add(writeComp.createPanel(), "WriteComplaint");
@@ -215,28 +232,40 @@ public class Test implements ActionListener, KeyboardFunction {
                 cardLayout.show(mainPanel, "OpenScreen");
                 user.setText("");
                 password.setText("");
-            } else {
+            } 
+            else 
+            {
+                //Gives error message to user to reenter login credentials
                 messageLabel.setText("Invalid credentials");
             }
         }
     }
 
+    //Method to toggle full screen
     private void toggleFullScreen() {
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice gd = ge.getDefaultScreenDevice();
 
-        if (isFullScreen) {
-            frame.setSize(800, 800); // Restore to the original size
-            frame.setLocationRelativeTo(null); // Center the window
-            gd.setFullScreenWindow(null); // Exit full screen
-        } else {
-            gd.setFullScreenWindow(frame); // Enter full screen
+        if (isFullScreen) 
+        {
+            // Restore to the original size
+            frame.setSize(800, 800);
+            // Center the window
+            frame.setLocationRelativeTo(null);
+            // Exit full screen
+            gd.setFullScreenWindow(null);
+        } 
+        else 
+        {
+            // Enter full screen
+            gd.setFullScreenWindow(frame);
         }
 
         isFullScreen = !isFullScreen;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         SwingUtilities.invokeLater(() -> new Test());
     }
 }

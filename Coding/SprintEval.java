@@ -25,24 +25,7 @@ public class SprintEval {
             System.err.println("Error saving evaluation: " + e.getMessage());
         }
     }
-
-    // Load evaluations for a specific employee
-    /*public static List<String> loadEvaluationsForEmployee(String employeeId) {
-        List<String> evaluations = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("SprintEval.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] data = line.split(",");
-                if (data.length == 4 && data[1].equals(employeeId)) {  // Check for Employee ID
-                    evaluations.add(line);
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("Error loading evaluations: " + e.getMessage());
-        }
-        return evaluations;
-    }*/
-
+    
     /// Load evaluations for a specific employee, returning only the values after the employee ID
     public static List<String> loadEvaluationsForEmployee(String employeeId) 
     {

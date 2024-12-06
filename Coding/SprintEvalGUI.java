@@ -7,36 +7,39 @@ import javax.swing.border.Border;
 
 class SprintEvalGUI 
 {
-    private JPanel panel, parentPanel, evalPanel, employeeEvalPanel;
+    private JPanel parentPanel, panel, containerPanel, evalPanel;
     private Employee emp;
-    private JLabel evalLabel, ratingLabel, noInfoFoundLabel, empIdLabel;
+    private JLabel titleLabel, ratingLabel, noInfoFoundLabel, empIdLabel;
     private JTextArea commentTextArea;
-    private List<String> evaluations;
-    private Dimension dimension;
     private JButton backButton;
+    private List<String> evaluations;
     private RepeatFormat repeat = new RepeatFormat();
     private Font labelFont = repeat.getTextFont();
 
+    //Constructor
     SprintEvalGUI(JPanel parentPanel, Employee emp) 
     {
         this.parentPanel = parentPanel;
         this.emp = emp;
     }
 
+    //Method to create sprint evaluation panel
     public JPanel createPanel() 
     {
+        //Make panel to return
         panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.WHITE);
 
-        JLabel titleLabel = new JLabel("Sprint Evaluation", SwingConstants.CENTER);
+        //Create title label
+        titleLabel = new JLabel("Sprint Evaluation", SwingConstants.CENTER);
         titleLabel.setFont(repeat.getTitleFont());
         panel.add(titleLabel, BorderLayout.NORTH);
 
         // Container for evaluations with a scroll pane
-        JPanel containerPanel = new JPanel();
+        containerPanel = new JPanel();
         containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
 
-        // Modify this method to show evaluations based on department
+        //Get evaluations and add it to the container for evaluations
         evaluations = getSprintEvaluations();
 
         if (evaluations.isEmpty()) {
@@ -52,35 +55,39 @@ class SprintEvalGUI
 
         // Add the container panel to a scroll pane for better scrolling functionality
         JScrollPane scrollPane = new JScrollPane(containerPanel);
-        scrollPane.setPreferredSize(new Dimension(500, 400)); // Set preferred size for scroll pane
-
+        scrollPane.setPreferredSize(new Dimension(500, 400));
         panel.add(scrollPane, BorderLayout.CENTER);
 
+        //Create and add a back button to the panel
         backButton = new JButton("Back");
         backButton.setFont(labelFont);
-        backButton.setBackground(Color.decode("#2A5490"));  // Sea Fun button color
-        backButton.setForeground(Color.WHITE);  // White text
+        backButton.setBackground(Color.decode("#2A5490"));
+        backButton.setForeground(Color.WHITE);
         backButton.setFocusPainted(false);
-        backButton.addActionListener(e -> showCard("OpenScreen"));
+        backButton.addActionListener(e -> repeat.showCard(parentPanel, "OpenScreen"));
         panel.add(backButton, BorderLayout.SOUTH);
 
         return panel;
     }
 
+    //Method to create evaluation panel(s)
     private JPanel createEvalForEmployee(String eval)
     {
+        //Create eval panel to return
         evalPanel = new JPanel();
         evalPanel.setLayout(new BoxLayout(evalPanel, BoxLayout.Y_AXIS));
         evalPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         evalPanel.setBackground(Color.WHITE);
-
         Border coloredBorder = BorderFactory.createLineBorder(Color.decode("#2a5490"), 3);
         evalPanel.setBorder(coloredBorder);
 
+        //Add evaluations, or lack thereof, to the evalPanel
         String[] parts = eval.split(",");
+        //If parts length is bigger than three get the evaluation
         if (parts.length >= 3)
         {
-            String empId = parts[0].trim();  // Extract Employee ID
+            //Get id, eval comment and rating
+            String empId = parts[0].trim();
             String comment = parts[1].trim();
             String rating = parts[2].trim();
 
@@ -89,6 +96,7 @@ class SprintEvalGUI
             empIdLabel.setFont(labelFont);
             evalPanel.add(empIdLabel);
 
+            //Display the Comment of the Evaluation
             commentTextArea = new JTextArea("Comment: " + comment);
             commentTextArea.setFont(labelFont);
             commentTextArea.setLineWrap(true);
@@ -98,12 +106,15 @@ class SprintEvalGUI
             commentTextArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
             evalPanel.add(commentTextArea);
 
+            //Display the Rating of the Evaluation
             ratingLabel = new JLabel("Rating: " + rating);
             ratingLabel.setFont(labelFont);
             evalPanel.add(ratingLabel);
 
-            evalPanel.add(Box.createVerticalStrut(10)); // Add some space between evaluations
+            // Add some space between evaluations
+            evalPanel.add(Box.createVerticalStrut(10));
         }
+        //Else get the message that there is no evaluation available
         else
         {
             noInfoFoundLabel = new JLabel("No sprint evaluation found for " + emp.getDemographics().getName());
@@ -120,6 +131,7 @@ class SprintEvalGUI
         String employeeId = emp.getId();
         List<String> evaluations = new ArrayList<>();
 
+        //Try to read the text file where the sprint evaluations are located
         try (BufferedReader reader = new BufferedReader(new FileReader("SprintEval.txt"))) 
         {
             String line;
@@ -128,15 +140,16 @@ class SprintEvalGUI
                 String[] parts = line.split(",");
                 if (parts.length >= 3)
                 {
+                    //If the employee is in HR or is a Supervisor, then let them view all of the evaluations
                     if (emp.getDepartment().equalsIgnoreCase("HR") || emp.getJobTitle().equalsIgnoreCase("Supervisor")) 
                     {
                         // Supervisor can see all evaluations
-                        evaluations.add(line);  // Include the full line (ID, comment, rating)
+                        evaluations.add(line);
                     }
                     else if (parts[0].equals(employeeId)) 
                     {
                         // Regular employee sees only their own evaluations
-                        evaluations.add(line);  // Include the full line (ID, comment, rating)
+                        evaluations.add(line);
                     }
                 }
             }
@@ -148,11 +161,5 @@ class SprintEvalGUI
         }
 
         return evaluations;
-    }
-
-    private void showCard(String card) 
-    {
-        CardLayout cl = (CardLayout) parentPanel.getLayout();
-        cl.show(parentPanel, card);
     }
 }
