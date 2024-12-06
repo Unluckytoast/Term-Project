@@ -26,7 +26,10 @@ public class EmployeesViewGUI {
         this.hr = hr; // Initialize HR instance
     }
 
-    public JPanel createPanel() {
+    //Create View Employee panel
+    public JPanel createPanel() 
+    {
+        //Make panel to return
         panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.WHITE);
 
@@ -43,12 +46,14 @@ public class EmployeesViewGUI {
         gridBag.insets = new Insets(10, 10, 10, 10);
 
         // Input field for Employee ID
+        // Id label
         idLabel = new JLabel("Employee ID:");
         idLabel.setFont(new Font("Georgia", Font.PLAIN, 16));
         gridBag.gridx = 0;
         gridBag.gridy = 0;
         formPanel.add(idLabel, gridBag);
 
+        // Id text field
         idField = new JTextField(15);
         idField.setFont(new Font("Georgia", Font.PLAIN, 16));
         gridBag.gridx = 1;

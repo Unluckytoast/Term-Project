@@ -18,15 +18,19 @@ public class ViewJobSatisfactionGUI
     private RepeatFormat repeat = new RepeatFormat();
     private Font font = repeat.getTextFont();
 
+    //Constructor
     public ViewJobSatisfactionGUI(JPanel parentPanel, Employee emp) 
     {
         this.parentPanel = parentPanel;
         this.emp = emp;
     }
 
-    public JPanel createPanel() {
+    //Create Personal Information Panel
+    public JPanel createPanel() 
+    {
+        //Make a panel to return
         panel = new JPanel(new BorderLayout());
-        panel.setBackground(Color.WHITE); // Sea Fun background
+        panel.setBackground(Color.WHITE);
 
         // Title label
         titleLabel = new JLabel("View Job Satisfaction", SwingConstants.CENTER);
@@ -35,7 +39,7 @@ public class ViewJobSatisfactionGUI
 
         // Form content
         formPanel = new JPanel(new GridBagLayout());
-        formPanel.setBackground(Color.WHITE);  // Sea Fun background
+        formPanel.setBackground(Color.WHITE);
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(10, 10, 10, 10);
 
@@ -66,7 +70,7 @@ public class ViewJobSatisfactionGUI
         // Button to view job satisfaction
         viewButton = new JButton("View Job Satisfaction");
         viewButton.setFont(font);
-        viewButton.setBackground(Color.decode("#2A5490"));  // Sea Fun button color
+        viewButton.setBackground(Color.decode("#2A5490"));
         viewButton.setForeground(Color.WHITE);
         viewButton.setFocusPainted(false);
         viewButton.addActionListener(new ActionListener() {
@@ -96,8 +100,8 @@ public class ViewJobSatisfactionGUI
         // Back button with Sea Fun theme
         backButton = new JButton("Back");
         backButton.setFont(font);
-        backButton.setBackground(Color.decode("#2A5490"));  // Sea Fun button color
-        backButton.setForeground(Color.WHITE);  // White text
+        backButton.setBackground(Color.decode("#2A5490"));
+        backButton.setForeground(Color.WHITE);
         backButton.setFocusPainted(false);
         backButton.addActionListener(e -> showCard("ViewFeedback"));
         panel.add(backButton, BorderLayout.SOUTH);
@@ -123,16 +127,20 @@ public class ViewJobSatisfactionGUI
                 if (line.contains("Employee ID: " + employeeId)) {
                     found = true;
                     result.append(line).append("\n");
-                    result.append(reader.readLine()).append("\n"); // Rating
-                    result.append(reader.readLine()).append("\n"); // Feedback
-                    result.append(reader.readLine()).append("\n"); // Suggestion
+                    // Rating
+                    result.append(reader.readLine()).append("\n");
+                    // Feedback
+                    result.append(reader.readLine()).append("\n");
+                    // Suggestion
+                    result.append(reader.readLine()).append("\n");
                     reader.readLine(); // Separator line
                     result.append("\n");
                 }
             }
-
-            if (!found) {
-                return ""; // No records found
+            //Checks if there are no records found
+            if (!found) 
+            {
+                return "";
             }
 
         } catch (IOException e) {

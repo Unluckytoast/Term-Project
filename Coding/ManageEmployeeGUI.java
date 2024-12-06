@@ -16,8 +16,10 @@ public class ManageEmployeeGUI {
         this.emp = emp;
     }
 
+    //Create Manage Employee Panel
     public JPanel createPanel() 
     {
+        //Make panel to return
         panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.WHITE);
 
@@ -27,6 +29,7 @@ public class ManageEmployeeGUI {
         titleLabel.setForeground(Color.BLACK);
         panel.add(titleLabel, BorderLayout.NORTH);
 
+        //Make manage panel to add the buttons to
         managePanel = new JPanel(new GridBagLayout());
         managePanel.setBackground(Color.WHITE);
         GridBagConstraints gridBag = new GridBagConstraints();
@@ -55,7 +58,7 @@ public class ManageEmployeeGUI {
         addEmpButton.addActionListener(e -> repeat.showCard(parentPanel, "AddEmp"));
         managePanel.add(addEmpButton, gridBag);
 
-        // Back button with Sea Fun theme color
+        // Back button
         backButton = new JButton("Back");
         backButton.setFont(font);
         backButton.setBackground(Color.decode("#2A5490"));

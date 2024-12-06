@@ -31,7 +31,9 @@ public class Test implements ActionListener, KeyboardFunction
     private Font font = repeat.getTextFont();
     private boolean isFullScreen = false;
 
-    public Test() {
+    // Constructor
+    public Test() 
+    {
         // Initialize frame
         frame = new JFrame("Application");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -198,7 +200,7 @@ public class Test implements ActionListener, KeyboardFunction
                 sprint = new SprintEvalGUI(mainPanel, loggedInEmployee);
                 manage = new ManageEmployeeGUI(mainPanel, loggedInEmployee);
                 writeSprint = new WriteSprintEvalGUI(mainPanel, loggedInEmployee);
-                complaint = new ViewComplaintGUI(mainPanel, loggedInEmployee);
+                complaint = new ViewComplaintGUI(mainPanel);
                 view = new EmployeesViewGUI(mainPanel, null, hr);
                 addEmp = new AddEmployeeGUI(mainPanel, loggedInEmployee);
                 addEmp2 = new AddEmployeeGUI(mainPanel, null);
@@ -266,6 +268,7 @@ public class Test implements ActionListener, KeyboardFunction
 
     public static void main(String[] args)
     {
+        //Start the program
         SwingUtilities.invokeLater(() -> new Test());
     }
 }

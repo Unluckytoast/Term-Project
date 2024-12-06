@@ -7,19 +7,22 @@ public class UpdateFeedbackGUI
     private JButton backButton, updateSatisButton, writeCompButton;
     private JLabel titleLabel;
     private RepeatFormat repeat = new RepeatFormat();
+    private Font font = repeat.getTextFont();
 
+    // Constructor
     public UpdateFeedbackGUI(JPanel parentPanel)
     {
         this.parentPanel = parentPanel;
     }
 
+    //Method to create an update feedback panel
     public JPanel createPanel()
     {
+        //Create update feedback panel to return
         panel = new JPanel(new BorderLayout());
-        panel.setBackground(Color.WHITE); // Sea Fun background
+        panel.setBackground(Color.WHITE);
 
-        Dimension dimension = new Dimension(300, 200); // Same button size
-        Font font = repeat.getTextFont();
+        Dimension dimension = new Dimension(300, 200);
 
         // Title label
         titleLabel = new JLabel("Employee Feedback", SwingConstants.CENTER);
@@ -40,7 +43,7 @@ public class UpdateFeedbackGUI
         updateSatisButton.setBackground(Color.decode("#2A5490"));  // Sea Fun button color
         updateSatisButton.setForeground(Color.WHITE);  // White text
         updateSatisButton.setFocusPainted(false);
-        updateSatisButton.addActionListener(e -> showCard("WriteSatisfaction"));
+        updateSatisButton.addActionListener(e -> repeat.showCard(parentPanel, "WriteSatisfaction"));
         gridBag.gridx = 0;
         gridBag.gridy = 0;
         buttonPanel.add(updateSatisButton, gridBag);
@@ -52,7 +55,7 @@ public class UpdateFeedbackGUI
         writeCompButton.setBackground(Color.decode("#2A5490"));  // Sea Fun button color
         writeCompButton.setForeground(Color.WHITE);  // White text
         writeCompButton.setFocusPainted(false);
-        writeCompButton.addActionListener(e -> showCard("WriteComplaint"));
+        writeCompButton.addActionListener(e -> repeat.showCard(parentPanel, "WriteComplaint"));
         gridBag.gridx++;
         buttonPanel.add(writeCompButton, gridBag);
 
@@ -63,17 +66,11 @@ public class UpdateFeedbackGUI
         backButton.setBackground(Color.decode("#2A5490"));  // Sea Fun button color
         backButton.setForeground(Color.WHITE);  // White text
         backButton.setFocusPainted(false);
-        backButton.addActionListener(e -> showCard("OpenScreen"));
+        backButton.addActionListener(e -> repeat.showCard(parentPanel, "OpenScreen"));
         panel.add(backButton, BorderLayout.SOUTH);
 
         panel.add(buttonPanel, BorderLayout.CENTER);
 
         return panel;
-    }
-
-    private void showCard(String card)
-    {
-        CardLayout cl = (CardLayout) parentPanel.getLayout();
-        cl.show(parentPanel, card);
     }
 }

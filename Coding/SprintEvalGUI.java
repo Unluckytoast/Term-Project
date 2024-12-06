@@ -16,7 +16,7 @@ class SprintEvalGUI
     private RepeatFormat repeat = new RepeatFormat();
     private Font labelFont = repeat.getTextFont();
 
-    //Constructor
+    // Constructor
     SprintEvalGUI(JPanel parentPanel, Employee emp) 
     {
         this.parentPanel = parentPanel;

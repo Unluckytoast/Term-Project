@@ -6,33 +6,36 @@ public class WriteSprintEvalGUI
 {
     private JPanel parentPanel, formPanel, panel;
     private JLabel titleLabel, evaluationLabel, ratingLabel;
-    private SprintEval sprint;
+    private JTextArea evaluationArea;
+    private StarRatingPanel starPanel;
     private JButton backButton;
     private Employee emp;
     private RepeatFormat repeat = new RepeatFormat();
     private Font font = repeat.getTextFont();
 
+    //Constructor
     WriteSprintEvalGUI(JPanel parentPanel, Employee emp)
     {
         this.parentPanel = parentPanel;
         this.emp = emp;
     }
     
+    //Create Write Sprint Evaluation Panel
     public JPanel createPanel() 
     {
         panel = new JPanel(new BorderLayout());
-        panel.setBackground(Color.white); // Alice blue (light blue)
-        panel.setForeground(Color.white); // Alice blue (light blue)
+        panel.setBackground(Color.white);
+        panel.setForeground(Color.white);
 
         // Title label
         titleLabel = new JLabel("Sprint Evaluation", SwingConstants.CENTER);
         titleLabel.setFont(repeat.getTitleFont());
-        titleLabel.setForeground(new Color(60, 60, 60));  // Dark gray color for the title
+        titleLabel.setForeground(new Color(60, 60, 60));
         panel.add(titleLabel, BorderLayout.NORTH);
 
         // GridBagLayout for form content
         formPanel = new JPanel(new GridBagLayout());
-        formPanel.setBackground(Color.WHITE); // Same background color
+        formPanel.setBackground(Color.WHITE); 
 
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(10, 10, 10, 10);
@@ -44,7 +47,7 @@ public class WriteSprintEvalGUI
         gridBag.gridy = 0;
         formPanel.add(evaluationLabel, gridBag);
 
-        JTextArea evaluationArea = new JTextArea(3, 20);
+        evaluationArea = new JTextArea(3, 20);
         evaluationArea.setFont(font);
         JScrollPane evaluationScroll = new JScrollPane(evaluationArea);
         gridBag.gridx = 0;
@@ -58,7 +61,7 @@ public class WriteSprintEvalGUI
         gridBag.gridy = 2;
         formPanel.add(ratingLabel, gridBag);
 
-        StarRatingPanel starPanel = new StarRatingPanel();
+        starPanel = new StarRatingPanel();
         gridBag.gridx = 0;
         gridBag.gridy = 3;
         formPanel.add(starPanel, gridBag);
@@ -66,7 +69,7 @@ public class WriteSprintEvalGUI
         // Button to save the evaluation
         JButton saveButton = new JButton("Save Evaluation");
         saveButton.setFont(font);
-        saveButton.setBackground(Color.decode("#2a5490"));  // Gold background for save button
+        saveButton.setBackground(Color.decode("#2a5490")); 
         saveButton.setForeground(Color.WHITE);
         saveButton.setFocusPainted(false);
         saveButton.addActionListener(new ActionListener() {
@@ -77,7 +80,7 @@ public class WriteSprintEvalGUI
                 {
                     String evaluationText = evaluationArea.getText();
                     int rating = starPanel.getRating();
-                    String supervisorId = emp.getId(); // Example value
+                    String supervisorId = emp.getId();
                  
 
                     // Save the evaluation
@@ -107,10 +110,10 @@ public class WriteSprintEvalGUI
         // Back Button
         backButton = new JButton("Back");
         backButton.setFont(font);
-        backButton.setBackground(Color.decode("#2A5490")); // Light gray for back button
+        backButton.setBackground(Color.decode("#2A5490"));
         backButton.setForeground(Color.WHITE);
         backButton.setFocusPainted(false);
-        backButton.addActionListener(e -> showCard("OpenScreen"));
+        backButton.addActionListener(e -> repeat.showCard(parentPanel, "OpenScreen"));
         panel.add(backButton, BorderLayout.SOUTH);
 
         panel.add(formPanel, BorderLayout.CENTER);
@@ -125,15 +128,16 @@ public class WriteSprintEvalGUI
         private final int STAR_COUNT = 5;
 
         // Gold color for filled stars, gray for unfilled
-
-        private static final Color GOLD_COLOR = new Color(255, 215, 0);  // Gold
-        private static final Color GRAY_COLOR = Color.GRAY;              // Empty stars
+        // Gold
+        private static final Color GOLD_COLOR = new Color(255, 215, 0);
+        // Empty stars
+        private static final Color GRAY_COLOR = Color.GRAY;
 
         public StarRatingPanel() 
         {
             setPreferredSize(new Dimension(250, 50));
             setLayout(new FlowLayout());
-            setBackground(Color.WHITE);  // Light blue background
+            setBackground(Color.WHITE);
             addMouseListener(new java.awt.event.MouseAdapter()
             {
                 @Override
@@ -156,14 +160,19 @@ public class WriteSprintEvalGUI
 
             for (int i = 0; i < STAR_COUNT; i++) 
             {
-                int x = 40 * i + 10;  // Calculate X position for each star
-                int y = 10;  // Fixed Y position
+                // Calculate X position for each star
+                int x = 40 * i + 10;
+                // Fixed Y position
+                int y = 10;
                 if (i < rating) 
                 {
-                    g2d.setColor(GOLD_COLOR);  // Fill color for selected stars (gold)
-                } else 
+                    // Fill color for selected stars (gold)
+                    g2d.setColor(GOLD_COLOR);
+                } 
+                else 
                 {
-                    g2d.setColor(GRAY_COLOR);    // Empty color for unselected stars
+                    // Empty color for unselected stars
+                    g2d.setColor(GRAY_COLOR);
                 }
                 drawStar(g2d, x, y);
             }
@@ -180,11 +189,14 @@ public class WriteSprintEvalGUI
         // Handle mouse click to set the rating
         private void handleStarClick(java.awt.event.MouseEvent evt) 
         {
-            int clickedStar = (evt.getX() - 10) / 40;  // Determine which star was clicked based on X position
+            // Determine which star was clicked based on X position
+            int clickedStar = (evt.getX() - 10) / 40;
             if (clickedStar >= 0 && clickedStar < STAR_COUNT) 
             {
-                rating = clickedStar + 1;  // Set rating based on the clicked star (1-5)
-                repaint();  // Repaint to update star display
+                // Set rating based on the clicked star (1-5)
+                rating = clickedStar + 1;
+                // Repaint to update star display
+                repaint();
             }
         }
 
@@ -194,11 +206,5 @@ public class WriteSprintEvalGUI
             return rating;
         }
 
-    }
-    
-    private void showCard(String card) 
-    {
-        CardLayout cl = (CardLayout) parentPanel.getLayout();
-        cl.show(parentPanel, card);
     }
 }

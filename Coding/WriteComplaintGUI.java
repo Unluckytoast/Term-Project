@@ -11,22 +11,26 @@ public class WriteComplaintGUI
     private RepeatFormat repeat = new RepeatFormat();
     private Font font = repeat.getTextFont();
 
+    //Constructor
     public WriteComplaintGUI(JPanel parentPanel, Employee emp)
     {
         this.parentPanel = parentPanel;
         this.emp = emp;
     }
 
+    //Create Write Complaint Panel
     public JPanel createPanel()
     {
+        //Make a panel to return
         panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.WHITE);  // Sea Fun background
 
-        // Title label with Sea Fun style
+        // Title label
         titleLabel = new JLabel("Write Complaint", SwingConstants.CENTER);
         titleLabel.setFont(repeat.getTitleFont());
         panel.add(titleLabel, BorderLayout.NORTH);
 
+        //Make a complaint panel to add to the panel
         complaintPanel = new JPanel(new GridBagLayout());
         complaintPanel.setBackground(Color.WHITE);  // Sea Fun background
         GridBagConstraints gridBag = new GridBagConstraints();
@@ -39,15 +43,15 @@ public class WriteComplaintGUI
         gridBag.gridy = 0;
         complaintPanel.add(complaintLabel, gridBag);
 
-        // Complaint text area
+        // Complaint text area, enable text wrapping at word boundaries
         complaintTextArea = new JTextArea();
         complaintTextArea.setFont(font);
-        complaintTextArea.setLineWrap(true);  // Enable line wrapping
-        complaintTextArea.setWrapStyleWord(true);  // Wrap at word boundaries
+        complaintTextArea.setLineWrap(true);
+        complaintTextArea.setWrapStyleWord(true);
 
         // Scroll pane for the complaint text area
         JScrollPane scrollPane = new JScrollPane(complaintTextArea);
-        scrollPane.setPreferredSize(new Dimension(400, 200));  // Adjust size here
+        scrollPane.setPreferredSize(new Dimension(400, 200));
         gridBag.gridy++;
         complaintPanel.add(scrollPane, gridBag);
 
@@ -57,11 +61,11 @@ public class WriteComplaintGUI
         gridBag.gridy++;
         complaintPanel.add(messageLabel, gridBag);
 
-        // Save button with Sea Fun styling
+        // Save button
         saveButton = new JButton("Save");
         saveButton.setFont(font);
-        saveButton.setBackground(Color.decode("#2A5490"));  // Sea Fun button color
-        saveButton.setForeground(Color.WHITE);  // White text
+        saveButton.setBackground(Color.decode("#2A5490"));
+        saveButton.setForeground(Color.WHITE);
         saveButton.setFocusPainted(false);
         saveButton.addActionListener(e -> {
             if (!complaintTextArea.getText().isEmpty()) {
@@ -75,23 +79,17 @@ public class WriteComplaintGUI
         gridBag.gridy++;
         complaintPanel.add(saveButton, gridBag);
 
-        // Back button with Sea Fun styling
+        // Back button
         backButton = new JButton("Back");
         backButton.setFont(font);
-        backButton.setBackground(Color.decode("#2A5490"));  // Sea Fun button color
-        backButton.setForeground(Color.WHITE);  // White text
+        backButton.setBackground(Color.decode("#2A5490"));
+        backButton.setForeground(Color.WHITE);
         backButton.setFocusPainted(false);
-        backButton.addActionListener(e -> showCard("UpdateFeedback"));
+        backButton.addActionListener(e -> repeat.showCard(parentPanel, "UpdateFeedback"));
         panel.add(backButton, BorderLayout.SOUTH);
 
         panel.add(complaintPanel, BorderLayout.CENTER);
 
         return panel;
-    }
-
-    private void showCard(String card)
-    {
-        CardLayout cl = (CardLayout) parentPanel.getLayout();
-        cl.show(parentPanel, card);
     }
 }

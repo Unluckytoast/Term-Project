@@ -1,28 +1,27 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.awt.event.*;
+import java.io.*;
 import javax.swing.*;
 
 public class ViewComplaintGUI
 {
     private JPanel parentPanel, panel, formPanel;
-    private Employee emp;
     private JButton backButton, viewButton;
     private JLabel titleLabel, idLabel;
     private JTextField idField;
     private JTextArea detailsArea;
+    private RepeatFormat repeat = new RepeatFormat();
 
-    public ViewComplaintGUI(JPanel parentPanel, Employee emp) 
+    //Constructor
+    public ViewComplaintGUI(JPanel parentPanel) 
     {
         this.parentPanel = parentPanel;
-        this.emp = emp;
     }
 
-    public JPanel createPanel() {
+    //Create View Complaint panel
+    public JPanel createPanel() 
+    {
+        //Make panel to return
         panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.WHITE); // Sea Fun background
 
@@ -92,13 +91,13 @@ public class ViewComplaintGUI
 
         panel.add(formPanel, BorderLayout.CENTER);
 
-        // Back button with Sea Fun theme
+        // Back button
         backButton = new JButton("Back");
         backButton.setFont(new Font("Georgia", Font.BOLD, 16));
         backButton.setBackground(Color.decode("#2A5490"));  // Sea Fun button color
         backButton.setForeground(Color.WHITE);  // White text
         backButton.setFocusPainted(false);
-        backButton.addActionListener(e -> showCard("ViewFeedback"));
+        backButton.addActionListener(e -> repeat.showCard(parentPanel, "ViewFeedback"));
         panel.add(backButton, BorderLayout.SOUTH);
 
         return panel;
@@ -118,31 +117,32 @@ public class ViewComplaintGUI
             boolean found = false;
     
             // Read each line from the file
-            while ((line = reader.readLine()) != null) {
-                String[] employeeData = line.split(","); // Split line by commas
-                if (employeeData[0].trim().equals(employeeId)) { // Check if first element matches employee ID
+            while ((line = reader.readLine()) != null) 
+            {
+                // Split line by commas
+                String[] employeeData = line.split(",");
+                // Check if first element matches employee ID
+                if (employeeData[0].trim().equals(employeeId)) 
+                {
                     found = true;
                     result.append("Employee ID: ").append(employeeData[0]).append("\n");
                     result.append("Complaint: ").append(employeeData[1]).append("\n");
                     result.append("\n");
                 }
             }
-    
-            if (!found) {
-                return ""; // No records found
+
+            // Checks if there is no records found
+            if (!found) 
+            {
+                return "";
             }
-    
-        } catch (IOException e) {
+        } 
+        catch (IOException e) 
+        {
             e.printStackTrace();
             return "Error reading the file.";
         }
     
         return result.toString();
-    }
-
-    private void showCard(String card)
-    {
-        CardLayout cl = (CardLayout) parentPanel.getLayout();
-        cl.show(parentPanel, card);
     }
 }

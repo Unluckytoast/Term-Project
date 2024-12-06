@@ -535,7 +535,7 @@ public class JobHistory
         {
             //Initialize a list to store the lines from the file
             List<String> lines = new ArrayList<>();
-            reader = new BufferedReader(new FileReader(JOBHIST)); //Open file for reading
+            reader = new BufferedReader(new FileReader(JOBHIST));
             String line;
     
             //Create a string that represents the talent or gift to remove
@@ -547,14 +547,14 @@ public class JobHistory
                 //If the line contains the talent or gift to remove, replace it
                 if (line.contains(removeSkill)) 
                 {
-                    line = line.replace(removeSkill, "").trim(); //Remove the talent or gift from the line
+                    line = line.replace(removeSkill, "").trim();
                 }
                 lines.add(line); //Add the (modified or unmodified) line to the list
             }
             reader.close();
     
             //Write the modified content back to the file
-            writer = new BufferedWriter(new FileWriter(JOBHIST)); //Open file for writing
+            writer = new BufferedWriter(new FileWriter(JOBHIST));
             for (String newLine : lines) 
             {
                 writer.write(newLine);

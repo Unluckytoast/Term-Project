@@ -21,7 +21,7 @@ public class WriteJobSatisfactionGUI
 
     public JPanel createPanel() {
         panel = new JPanel(new BorderLayout());
-        panel.setBackground(Color.decode("#2a5490")); // Alice blue
+        panel.setBackground(Color.decode("#2a5490"));
 
         // Title label
         titleLabel = new JLabel("Job Satisfaction Survey", SwingConstants.CENTER);
@@ -36,13 +36,14 @@ public class WriteJobSatisfactionGUI
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(10, 10, 10, 10);
 
-        // Feedback field
+        // Feedback label
         feedbackLabel = new JLabel("Feedback:");
         feedbackLabel.setFont(font);
         gridBag.gridx = 0;
         gridBag.gridy = 0;
         formPanel.add(feedbackLabel, gridBag);
 
+        // Feedback text area
         feedbackArea = new JTextArea(3, 20);
         feedbackArea.setFont(font);
         JScrollPane feedbackScroll = new JScrollPane(feedbackArea);
@@ -50,13 +51,14 @@ public class WriteJobSatisfactionGUI
         gridBag.gridy = 1;
         formPanel.add(feedbackScroll, gridBag);
 
-        // Suggestions field
+        // Suggestions label
         suggestionLabel = new JLabel("Suggestions:");
         suggestionLabel.setFont(font);
         gridBag.gridx = 0;
         gridBag.gridy = 2;
         formPanel.add(suggestionLabel, gridBag);
 
+        // Suggestions text area
         suggestionArea = new JTextArea(3, 20);
         suggestionArea.setFont(font);
         JScrollPane suggestionScroll = new JScrollPane(suggestionArea);
@@ -64,13 +66,14 @@ public class WriteJobSatisfactionGUI
         gridBag.gridy = 3;
         formPanel.add(suggestionScroll, gridBag);
 
-        // Star rating panel
+        // Star rating label
         ratingLabel = new JLabel("Rating:");
         ratingLabel.setFont(font);
         gridBag.gridx = 0;
         gridBag.gridy = 4;
         formPanel.add(ratingLabel, gridBag);
 
+        // Star rating panel
         starPanel = new StarRatingPanel();
         gridBag.gridx = 0;
         gridBag.gridy = 5;
@@ -87,7 +90,7 @@ public class WriteJobSatisfactionGUI
                 String feedback = feedbackArea.getText();
                 String suggestion = suggestionArea.getText();
                 int rating = starPanel.getRating();
-                String employeeId = emp.getId(); // Example employee ID // replace with this emp.getId();
+                String employeeId = emp.getId();
 
                 // Validate input
                 if (feedback.isEmpty() || suggestion.isEmpty()) {
@@ -112,13 +115,13 @@ public class WriteJobSatisfactionGUI
 
         panel.add(formPanel, BorderLayout.CENTER);
 
-      // Back button with Sea Fun styling
+      // Back button 
       backButton = new JButton("Back");
       backButton.setFont(font);
-      backButton.setBackground(Color.decode("#2A5490"));  // Sea Fun button color
-      backButton.setForeground(Color.WHITE);  // White text
+      backButton.setBackground(Color.decode("#2A5490"));
+      backButton.setForeground(Color.WHITE);
       backButton.setFocusPainted(false);
-      backButton.addActionListener(e -> showCard("UpdateFeedback"));
+      backButton.addActionListener(e -> repeat.showCard(parentPanel, "UpdateFeedback"));
       panel.add(backButton, BorderLayout.SOUTH);
 
     
@@ -182,11 +185,5 @@ public class WriteJobSatisfactionGUI
         public int getRating() {
             return rating;
         }
-    }
-
-    private void showCard(String card)
-    {
-        CardLayout cl = (CardLayout) parentPanel.getLayout();
-        cl.show(parentPanel, card);
     }
 }
