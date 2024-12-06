@@ -13,11 +13,10 @@ class PersonalInformationGUI
     private List<String> pastJobs, skills, talents;
     private JobHistory jobHistory = new JobHistory();
     private Employee emp;
-    private JTextArea pastTextArea, currTextArea, pastTimeTextArea, currTimeTextArea, skillTextArea, talentTextArea;
+    private JTextArea pastTextArea, currTextArea, skillTextArea, talentTextArea;
     private Dimension dimension = new Dimension(200, 75);
     private RepeatFormat repeat = new RepeatFormat();
     private Font font = repeat.getTextFont();
-    private WriteJobSatisfactionGUI writeJob;
     private Color themeBlue = Color.decode("#2A5490"); // Sea Fun theme color
 
     //Constructor
@@ -53,12 +52,11 @@ class PersonalInformationGUI
         String id = emp.getId();
 
         // Add current job to the job list panel
-        int row = 1;
         String currentJob = jobHistory.getCurrentJob(id);
 
-        gridBag.gridy = row;
+        gridBag.gridy = 1;
         jobListPanel.add(createCurrJobPanel(currentJob), gridBag);
-        row++;
+        int row = 2;
 
         // Add past job panels to the job list panel dynamically
         pastJobs = jobHistory.getPastJob(id);
@@ -163,6 +161,7 @@ class PersonalInformationGUI
         return demoPanel;
     }
 
+    //Method to create current job panel
     private JPanel createCurrJobPanel(String job) 
     {
         //Create current job panel to return
@@ -174,7 +173,7 @@ class PersonalInformationGUI
         gridBag.insets = new Insets(5, 5, 5, 5);
         String current[] = job.split(":");
 
-        //Create current job label
+        //Create current job label and add it to current job panel
         currJobLabel = new JLabel("Current Job:");
         currJobLabel.setFont(font);
         currJobLabel.setForeground(Color.WHITE);
@@ -183,7 +182,9 @@ class PersonalInformationGUI
         gridBag.anchor = GridBagConstraints.NORTH;
         jobPanel.add(currJobLabel, gridBag);
 
-        //Create current job text area
+        //Create current job text area and add it to the current job panel
+        //Set area to where it cannot be edited. Also set
+        //text area to where line can wrap to the next line.
         currTextArea = new JTextArea(2, 18);
         currTextArea.setText(current[0]);
         currTextArea.setFont(font);
@@ -191,7 +192,6 @@ class PersonalInformationGUI
         currTextArea.setEditable(false);
         currTextArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         gridBag.gridx++;
-        jobPanel.add(currTextArea, gridBag);
 
         //If current[] is longer than one, it will add a time in job to the text area
         if(current.length > 1)
@@ -209,16 +209,18 @@ class PersonalInformationGUI
         return jobPanel;
     }
 
+    //Method to create past job panel(s)
     private JPanel createPastJobPanel(String job) 
     {
-        
+        //Create past job panel to return
         jobPanel = new JPanel(new GridBagLayout());
         jobPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        jobPanel.setBackground(themeBlue); // Change to a more neutral color for job panel
+        jobPanel.setBackground(themeBlue);
 
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(5, 5, 5, 5);
 
+        //Create past job label and add it to the past job panel
         pastJobLabel = new JLabel("Past Job:");
         pastJobLabel.setFont(font);
         pastJobLabel.setForeground(Color.WHITE);
@@ -227,6 +229,7 @@ class PersonalInformationGUI
         gridBag.anchor = GridBagConstraints.NORTH;
         jobPanel.add(pastJobLabel, gridBag);
 
+        //Create past job text area
         String past[] = job.split(":");
         pastTextArea = new JTextArea(2, 18);
         pastTextArea.setLineWrap(true);
@@ -236,6 +239,9 @@ class PersonalInformationGUI
         pastTextArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         gridBag.gridx++;
 
+        //If past length is longer than two, it will get start
+        //and end date and show how long that job was worked
+        //Add the past text area to the job panel
         if(past.length > 2)
         {
             pastTextArea.setText(past[0]);
@@ -249,6 +255,7 @@ class PersonalInformationGUI
             pastTextArea.append("\nTime in job - " + repeat.getDateDifference(startDate, endDate));
             jobPanel.add(pastTextArea, gridBag); 
         }
+        //This will return that there is no past job
         else
         {
             pastTextArea.setText(past[0]);
@@ -259,8 +266,10 @@ class PersonalInformationGUI
         return jobPanel;
     }
 
+    //Method to create skill panel(s)
     private JPanel createSkillPanel(String skill) 
     {
+        //Create skill panel to return
         jobPanel = new JPanel(new GridBagLayout());
         jobPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jobPanel.setBackground(themeBlue);
@@ -268,6 +277,7 @@ class PersonalInformationGUI
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(5, 5, 5, 5);
 
+        //Create skill label and add it to the skill panel
         skillLabel = new JLabel("Skill:");
         skillLabel.setForeground(Color.WHITE);
         skillLabel.setFont(font);
@@ -276,6 +286,7 @@ class PersonalInformationGUI
         gridBag.anchor = GridBagConstraints.NORTH;
         jobPanel.add(skillLabel, gridBag);
 
+        //Create skill text area and add it to the panel
         skillTextArea = new JTextArea(2, 18);
         skillTextArea.setLineWrap(true);
         skillTextArea.setFont(font);
@@ -289,8 +300,10 @@ class PersonalInformationGUI
         return jobPanel;
     }
 
+    //Method to create talent and gift panel(s)
     private JPanel createTalentAndGiftPanel(String talent) 
     {
+        //Create talent and gift panel to return
         jobPanel = new JPanel(new GridBagLayout());
         jobPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jobPanel.setBackground(themeBlue);
@@ -298,6 +311,7 @@ class PersonalInformationGUI
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(5, 5, 5, 5);
 
+        //Create talent label and add it to the talent panel
         talentLabel = new JLabel("Talent:");
         talentLabel.setFont(font);
         talentLabel.setForeground(Color.WHITE);
@@ -306,6 +320,7 @@ class PersonalInformationGUI
         gridBag.anchor = GridBagConstraints.NORTH;
         jobPanel.add(talentLabel, gridBag);
 
+        //Create talent text area and add it to the talent panel
         talentTextArea = new JTextArea(2, 18);
         talentTextArea.setLineWrap(true);
         talentTextArea.setFont(font);

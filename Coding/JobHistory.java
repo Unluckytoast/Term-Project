@@ -24,7 +24,7 @@ public class JobHistory
 
             while ((line = reader.readLine()) != null)
             {
-                if(line.contains(id))
+                if(line.startsWith("id: " + id + ","))
                 {
                     idFound = true;
                 }
@@ -40,6 +40,7 @@ public class JobHistory
                             pastJobs.add(part.substring(5).trim());
                         }
                     }
+                    break;
                 }
             }
         }
@@ -52,6 +53,7 @@ public class JobHistory
         {
             pastJobs.add("No past jobs found for user " + id);
         }
+        System.out.println(pastJobs);
         return pastJobs;
     }
 
@@ -168,7 +170,7 @@ public class JobHistory
             {
                 
                 //Check if the current line contains the user ID
-                if (line.contains(id)) 
+                if (line.startsWith("id: " + id + ",")) 
                 {
                     idFound = true;
                 }
@@ -189,6 +191,7 @@ public class JobHistory
                             curr = part.substring(5).trim();
                         }
                     }
+                    break;
                 }
             }
             //Reader will be closed automatically at the end of the try block

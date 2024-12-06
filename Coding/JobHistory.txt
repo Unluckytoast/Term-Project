@@ -26,7 +26,7 @@ id: 5205, CJ: re: 2024/12/05,
 
 id: 2020, CJ: IDK: 2024/12/06,
 
-id: 8791, CJ: Head Wizard: 2024/12/06,
+id: 8791, CJ: Head Wizard: 2024/12/06, PJ: hello: 2012/05/11: 2019/12/31, PJ: darling: 2013/01/01: 2019/12/31, Skill: Stitching, Talent or Gift: Not funny haha funny weird,
 
 id: 2121, CJ: re: 2024/12/06,
 
@@ -40,7 +40,7 @@ id: 6666, CJ: hehe: 2024/12/06,
 
 id: 7267, CJ: hehe: 2024/12/06, PJ: Hda: 2001/04/30: 2021/04/30,
 
-id: 7454, CJ: afe: 2024/12/06, PJ: dafa: 2002/04/30: 2002/04/19,
+id: 7454, CJ: afe: 2024/12/06, PJ: dafa: 2002/04/11: 2002/04/19,
 
 id: 7040, CJ: eafdae: 2024/12/06, PJ: dafaef: 2002/04/30: 2002/04/19,
 
