@@ -168,12 +168,11 @@ class PersonalInformationGUI
         gridBag.anchor = GridBagConstraints.NORTH;
         jobPanel.add(currJobLabel, gridBag);
 
-        currTextArea = new JTextArea(1, 18);
+        currTextArea = new JTextArea(2, 18);
         currTextArea.setText(current[0]);
         currTextArea.setFont(font);
         currTextArea.setLineWrap(true);
         currTextArea.setEditable(false);
-        currTextArea.setPreferredSize(dimension);
         currTextArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         gridBag.gridx++;
         jobPanel.add(currTextArea, gridBag);
@@ -216,7 +215,6 @@ class PersonalInformationGUI
         pastTextArea.setWrapStyleWord(true);
         pastTextArea.setEditable(false);
         pastTextArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        pastTextArea.setPreferredSize(dimension);
         gridBag.gridx++;
 
         if(past.length > 2)
@@ -251,11 +249,12 @@ class PersonalInformationGUI
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(5, 5, 5, 5);
 
-        skillLabel = new JLabel("Skill");
+        skillLabel = new JLabel("Skill:");
         skillLabel.setForeground(Color.WHITE);
         skillLabel.setFont(font);
         gridBag.gridx = 0;
         gridBag.gridy = 0;
+        gridBag.anchor = GridBagConstraints.NORTH;
         jobPanel.add(skillLabel, gridBag);
 
         skillTextArea = new JTextArea(2, 18);
@@ -264,7 +263,6 @@ class PersonalInformationGUI
         skillTextArea.setWrapStyleWord(true);
         skillTextArea.setEditable(false);
         skillTextArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        skillTextArea.setPreferredSize(dimension);
         skillTextArea.setText(skill);
         gridBag.gridx++;
         jobPanel.add(skillTextArea, gridBag);
@@ -286,6 +284,7 @@ class PersonalInformationGUI
         talentLabel.setForeground(Color.WHITE);
         gridBag.gridx = 0;
         gridBag.gridy = 0;
+        gridBag.anchor = GridBagConstraints.NORTH;
         jobPanel.add(talentLabel, gridBag);
 
         talentTextArea = new JTextArea(2, 18);
@@ -294,7 +293,6 @@ class PersonalInformationGUI
         talentTextArea.setWrapStyleWord(true);
         talentTextArea.setEditable(false);
         talentTextArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        talentTextArea.setPreferredSize(dimension);
         talentTextArea.setText(talent);
         gridBag.gridx++;
         jobPanel.add(talentTextArea, gridBag);
