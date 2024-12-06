@@ -447,10 +447,7 @@ public class JobHistory
             reader = new BufferedReader(new FileReader(JOBHIST));
             String line;
             boolean idFound = false;
-    
-            //Print out the header for the talents or gifts
-            System.out.println("Talents or Gifts for user " + id + ":");
-    
+            
             //Read the file line by line
             while ((line = reader.readLine()) != null)
             {

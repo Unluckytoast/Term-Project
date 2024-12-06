@@ -20,43 +20,48 @@ class PersonalInformationGUI
     private WriteJobSatisfactionGUI writeJob;
     private Color themeBlue = Color.decode("#2A5490"); // Sea Fun theme color
 
+    //Constructor
     PersonalInformationGUI(JPanel parentPanel, Employee emp) 
     {
         this.parentPanel = parentPanel;
         this.emp = emp;
     }
 
+    //Create Personal Information Panel
     public JPanel createPanel() 
     {
+        //Make panel to return
         panel = new JPanel(new BorderLayout());
-        panel.setBackground(Color.WHITE); // Light background for contrast
+        panel.setBackground(Color.WHITE);
 
+        //Create title label
         titleLabel = new JLabel("Personal Information", SwingConstants.CENTER);
         titleLabel.setFont(repeat.getTitleFont());
         panel.add(titleLabel, BorderLayout.NORTH);
 
+        //Create job list panel to add job information to
         jobListPanel = new JPanel(new GridBagLayout());
         jobListPanel.setBackground(Color.WHITE); // White background for job list panel
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(10, 10, 10, 10);
 
+        //Add demographics to the job list panel
         gridBag.gridx = 0;
         gridBag.gridy = 0;
         jobListPanel.add(createDemographicsPanel(), gridBag);
 
         String id = emp.getId();
 
-        // Add job panels dynamically
+        // Add current job to the job list panel
         int row = 1;
         String currentJob = jobHistory.getCurrentJob(id);
 
         gridBag.gridy = row;
         jobListPanel.add(createCurrJobPanel(currentJob), gridBag);
         row++;
-        gridBag.gridy = row;
 
+        // Add past job panels to the job list panel dynamically
         pastJobs = jobHistory.getPastJob(id);
-        // Add job panels dynamically
 
         for (String job : pastJobs) 
         {
@@ -65,8 +70,8 @@ class PersonalInformationGUI
             row++;
         }
 
+        // Add skill panels to job list panel dynamically
         skills = jobHistory.getSkill(id);
-        // Add job panels dynamically
 
         for (String skl : skills) 
         {
@@ -75,8 +80,8 @@ class PersonalInformationGUI
             row++;
         }
 
+        // Add talent panels to job list panel dynamically
         talents = jobHistory.getTalentsAndGifts(id);
-        // Add job panels dynamically
 
         for (String tal : talents) 
         {
@@ -90,10 +95,11 @@ class PersonalInformationGUI
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         panel.add(scrollPane, BorderLayout.CENTER);
 
+        // Create a new back button
         backButton = new JButton("Back");
-        backButton.setBackground(themeBlue); // Set the back button background to theme blue
-        backButton.setForeground(Color.WHITE); // Set button text to white
-        backButton.addActionListener(e -> showCard("OpenScreen"));
+        backButton.setBackground(themeBlue);
+        backButton.setForeground(Color.WHITE);
+        backButton.addActionListener(e -> repeat.showCard(parentPanel, "OpenScreen"));
         panel.add(backButton, BorderLayout.SOUTH);
 
         return panel;
@@ -101,6 +107,7 @@ class PersonalInformationGUI
 
     private JPanel createDemographicsPanel()
     {
+        //Create demo panel to return
         demoPanel = new JPanel(new GridBagLayout());
         demoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         demoPanel.setBackground(themeBlue); // Background color for demographics section
@@ -108,6 +115,7 @@ class PersonalInformationGUI
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(5, 5, 5, 5);
 
+        //Add name of employee to demoPanel
         demoNameLabel = new JLabel("Name: " + emp.getDemographics().getName());
         demoNameLabel.setFont(font);
         demoNameLabel.setForeground(Color.WHITE);
@@ -115,6 +123,7 @@ class PersonalInformationGUI
         gridBag.gridy = 0;
         demoPanel.add(demoNameLabel, gridBag);
 
+        //Add race of employee to demoPanel
         demoRaceLabel = new JLabel("Race: " + emp.getDemographics().getRace());
         demoRaceLabel.setFont(font);
         demoRaceLabel.setForeground(Color.WHITE);
@@ -122,6 +131,7 @@ class PersonalInformationGUI
         gridBag.gridy = 1;
         demoPanel.add(demoRaceLabel, gridBag);
 
+        //Add age of employee to demoPanel
         demoAgeLabel = new JLabel("Age: " + emp.getDemographics().getAge());
         demoAgeLabel.setFont(font);
         demoAgeLabel.setForeground(Color.WHITE);
@@ -129,6 +139,7 @@ class PersonalInformationGUI
         gridBag.gridy = 2;
         demoPanel.add(demoAgeLabel, gridBag);
 
+        //Add address of employee to demoPanel
         demoAddressLabel = new JLabel("Address: " + emp.getDemographics().getAddress());
         demoAddressLabel.setFont(font);
         demoAddressLabel.setForeground(Color.WHITE);
@@ -136,13 +147,15 @@ class PersonalInformationGUI
         gridBag.gridy = 3;
         demoPanel.add(demoAddressLabel, gridBag);
 
+        //Add contact information of employee to demoPanel
         demoContactInfoLabel = new JLabel("Contact Info: " + emp.getDemographics().getContactInfo());
         demoContactInfoLabel.setFont(font);
         demoContactInfoLabel.setForeground(Color.WHITE);
         gridBag.gridx = 0;
         gridBag.gridy = 4;
-        
         demoPanel.add(demoContactInfoLabel, gridBag);
+        
+        //Set demoPanel size
         int height = demoPanel.getPreferredSize().height + 25;
         int width = demoPanel.getPreferredSize().height + 75;
         demoPanel.setPreferredSize(new Dimension(width, height));
@@ -152,6 +165,7 @@ class PersonalInformationGUI
 
     private JPanel createCurrJobPanel(String job) 
     {
+        //Create current job panel to return
         jobPanel = new JPanel(new GridBagLayout());
         jobPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jobPanel.setBackground(themeBlue);
@@ -160,6 +174,7 @@ class PersonalInformationGUI
         gridBag.insets = new Insets(5, 5, 5, 5);
         String current[] = job.split(":");
 
+        //Create current job label
         currJobLabel = new JLabel("Current Job:");
         currJobLabel.setFont(font);
         currJobLabel.setForeground(Color.WHITE);
@@ -168,6 +183,7 @@ class PersonalInformationGUI
         gridBag.anchor = GridBagConstraints.NORTH;
         jobPanel.add(currJobLabel, gridBag);
 
+        //Create current job text area
         currTextArea = new JTextArea(2, 18);
         currTextArea.setText(current[0]);
         currTextArea.setFont(font);
@@ -177,6 +193,7 @@ class PersonalInformationGUI
         gridBag.gridx++;
         jobPanel.add(currTextArea, gridBag);
 
+        //If current[] is longer than one, it will add a time in job to the text area
         if(current.length > 1)
         {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
@@ -186,6 +203,7 @@ class PersonalInformationGUI
             currTextArea.append("\nTime in job - " + repeat.getDateDifference(startDate, endDate));
         }
 
+        //Add the text area to the current job panel
         jobPanel.add(currTextArea, gridBag);
 
         return jobPanel;
@@ -193,6 +211,7 @@ class PersonalInformationGUI
 
     private JPanel createPastJobPanel(String job) 
     {
+        
         jobPanel = new JPanel(new GridBagLayout());
         jobPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jobPanel.setBackground(themeBlue); // Change to a more neutral color for job panel
@@ -298,12 +317,6 @@ class PersonalInformationGUI
         jobPanel.add(talentTextArea, gridBag);
 
         return jobPanel;
-    }
-
-    private void showCard(String card) 
-    {
-        CardLayout cl = (CardLayout) parentPanel.getLayout();
-        cl.show(parentPanel, card);
     }
 }
 

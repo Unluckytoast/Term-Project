@@ -4,24 +4,28 @@ import javax.swing.*;
 
 class OpenScreen implements ActionListener, KeyboardFunction
 {
-    private JPanel panel, parentPanel;
+    private JPanel panel, parentPanel, buttonPanel;
     private JButton personalInfoButton, sprintEvalButton, writeComplaint, writeSprintEval, viewComplaint, viewEmployees, logoutButton;
     private Employee emp;
     private RepeatFormat repeat = new RepeatFormat();
     private Font font = repeat.getTextFont();
 
+    //Constructor
     OpenScreen(JPanel parentPanel, Employee emp) 
     {
         this.parentPanel = parentPanel;
         this.emp = emp;
     }
 
+    //Create Opening Screen Panel
     public JPanel createPanel() 
     {
+        //Make panel to return
         panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.WHITE); // White background for the panel
 
-        JPanel buttonPanel = new JPanel(new GridBagLayout());
+        //Make button panel to add to panel
+        buttonPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(10, 10, 10, 10);
 
@@ -33,7 +37,7 @@ class OpenScreen implements ActionListener, KeyboardFunction
         personalInfoButton.setFont(font);
         personalInfoButton.setBackground(Color.decode("#2A5490"));
         personalInfoButton.setForeground(Color.WHITE); // White text
-        personalInfoButton.addActionListener(e -> showCard("PersonalInfoScreen"));
+        personalInfoButton.addActionListener(e -> repeat.showCard(parentPanel, "PersonalInfoScreen"));
         gridBag.gridx = 0;
         gridBag.gridy = 1;
         buttonPanel.add(personalInfoButton, gridBag);
@@ -44,7 +48,7 @@ class OpenScreen implements ActionListener, KeyboardFunction
         sprintEvalButton.setFont(font);
         sprintEvalButton.setBackground(Color.decode("#2A5490"));
         sprintEvalButton.setForeground(Color.WHITE); // White text
-        sprintEvalButton.addActionListener(e -> showCard("SprintEvalScreen"));
+        sprintEvalButton.addActionListener(e -> repeat.showCard(parentPanel, "SprintEvalScreen"));
         gridBag.gridx = 1;
         buttonPanel.add(sprintEvalButton, gridBag);
 
@@ -54,7 +58,7 @@ class OpenScreen implements ActionListener, KeyboardFunction
         writeComplaint.setFont(font);
         writeComplaint.setBackground(Color.decode("#2A5490"));
         writeComplaint.setForeground(Color.WHITE); // White text
-        writeComplaint.addActionListener(e -> showCard("UpdateFeedback"));
+        writeComplaint.addActionListener(e -> repeat.showCard(parentPanel, "UpdateFeedback"));
         gridBag.gridx = 0;
         gridBag.gridy = 2;
         buttonPanel.add(writeComplaint, gridBag);
@@ -65,7 +69,7 @@ class OpenScreen implements ActionListener, KeyboardFunction
         writeSprintEval.setFont(font);
         writeSprintEval.setBackground(Color.decode("#2A5490"));
         writeSprintEval.setForeground(Color.WHITE); // White text
-        writeSprintEval.addActionListener(e -> showCard("WriteSprint"));
+        writeSprintEval.addActionListener(e -> repeat.showCard(parentPanel, "WriteSprint"));
         gridBag.gridx = 1;
         gridBag.gridy = 2;
         buttonPanel.add(writeSprintEval, gridBag);
@@ -79,7 +83,7 @@ class OpenScreen implements ActionListener, KeyboardFunction
             viewEmployees.setFont(font);
             viewEmployees.setBackground(Color.decode("#2A5490"));
             viewEmployees.setForeground(Color.WHITE); // White text
-            viewEmployees.addActionListener(e -> showCard("ManageEmps"));
+            viewEmployees.addActionListener(e -> repeat.showCard(parentPanel, "ManageEmps"));
             gridBag.gridx = 1;
             gridBag.gridy++;
             buttonPanel.add(viewEmployees, gridBag); 
@@ -109,16 +113,10 @@ class OpenScreen implements ActionListener, KeyboardFunction
 
         panel.add(buttonPanel, BorderLayout.CENTER);
 
-        KeyboardFunction.bindEscapeKey(panel);  // Binds escape key functionality for navigation
+        // Binds escape key functionality for navigation
+        KeyboardFunction.bindEscapeKey(panel);
 
         return panel;
-    }
-
-    // Method to switch between different screens (using CardLayout)
-    private void showCard(String card) 
-    {
-        CardLayout cl = (CardLayout) parentPanel.getLayout();
-        cl.show(parentPanel, card);
     }
 
     @Override
