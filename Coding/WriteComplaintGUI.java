@@ -23,7 +23,7 @@ public class WriteComplaintGUI
     {
         //Make a panel to return
         panel = new JPanel(new BorderLayout());
-        panel.setBackground(Color.WHITE);  // Sea Fun background
+        panel.setBackground(Color.WHITE);  // White background
 
         // Title label
         titleLabel = new JLabel("Write Complaint", SwingConstants.CENTER);
@@ -32,7 +32,7 @@ public class WriteComplaintGUI
 
         //Make a complaint panel to add to the panel
         complaintPanel = new JPanel(new GridBagLayout());
-        complaintPanel.setBackground(Color.WHITE);  // Sea Fun background
+        complaintPanel.setBackground(Color.WHITE);  // White background
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(10, 10, 10, 10);
 

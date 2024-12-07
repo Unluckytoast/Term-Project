@@ -66,7 +66,7 @@ public class Test implements ActionListener, KeyboardFunction
     private JPanel createLoginScreen() 
     {
         loginPanel = new JPanel(new BorderLayout());
-        loginPanel.setBackground(Color.WHITE); // Set background to white for Sea Fun theme
+        loginPanel.setBackground(Color.WHITE); // Set background to white
 
         topPanel = new JPanel(new BorderLayout());
         topPanel.setOpaque(false);
@@ -96,7 +96,7 @@ public class Test implements ActionListener, KeyboardFunction
 
         // Create the center panel to hold the logo and login fields
         centerPanel = new JPanel(new GridBagLayout());
-        centerPanel.setBackground(Color.decode("#2A5490")); // Sea Fun theme background color
+        centerPanel.setBackground(Color.decode("#2A5490")); // Blue background color
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(10, 10, 10, 10);
 
@@ -167,7 +167,7 @@ public class Test implements ActionListener, KeyboardFunction
         // Login button
         loginButton = new JButton("Login");
         loginButton.setFont(font);
-        loginButton.setBackground(Color.WHITE); // Sea Fun button color
+        loginButton.setBackground(Color.WHITE); // White button color
         loginButton.setFocusPainted(false);
         loginButton.addActionListener(this);
         gridBag.gridy = 6;

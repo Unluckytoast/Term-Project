@@ -23,7 +23,7 @@ public class ViewComplaintGUI
     {
         //Make panel to return
         panel = new JPanel(new BorderLayout());
-        panel.setBackground(Color.WHITE); // Sea Fun background
+        panel.setBackground(Color.WHITE); // White background
 
         // Title label
         titleLabel = new JLabel("View Complaints", SwingConstants.CENTER);
@@ -33,7 +33,7 @@ public class ViewComplaintGUI
 
         // Form content
         formPanel = new JPanel(new GridBagLayout());
-        formPanel.setBackground(Color.WHITE);  // Sea Fun background
+        formPanel.setBackground(Color.WHITE);  
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(10, 10, 10, 10);
         // Input field for Employee ID
@@ -64,7 +64,7 @@ public class ViewComplaintGUI
         // Button to view employee complaints
         viewButton = new JButton("View Employee Complaints");
         viewButton.setFont(new Font("Georgia", Font.PLAIN, 16));
-        viewButton.setBackground(Color.decode("#2A5490"));  // Sea Fun button color
+        viewButton.setBackground(Color.decode("#2A5490")); 
         viewButton.setForeground(Color.WHITE);  // White text
         viewButton.setFocusPainted(false);
         viewButton.addActionListener(new ActionListener() {
@@ -94,7 +94,8 @@ public class ViewComplaintGUI
         // Back button
         backButton = new JButton("Back");
         backButton.setFont(new Font("Georgia", Font.BOLD, 16));
-        backButton.setBackground(Color.decode("#2A5490"));  // Sea Fun button color
+        backButton.setBackground(Color.decode("#2A5490"));  
+        
         backButton.setForeground(Color.WHITE);  // White text
         backButton.setFocusPainted(false);
         backButton.addActionListener(e -> repeat.showCard(parentPanel, "ViewFeedback"));

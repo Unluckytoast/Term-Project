@@ -17,7 +17,7 @@ class PersonalInformationGUI
     private Dimension dimension = new Dimension(200, 75);
     private RepeatFormat repeat = new RepeatFormat();
     private Font font = repeat.getTextFont();
-    private Color themeBlue = Color.decode("#2A5490"); // Sea Fun theme color
+    private Color themeBlue = Color.decode("#2A5490"); 
 
     //Constructor
     PersonalInformationGUI(JPanel parentPanel, Employee emp) 

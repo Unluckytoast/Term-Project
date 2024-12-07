@@ -130,7 +130,7 @@ public class EmployeesViewGUI {
 
         // Back button to return to the previous screen
         backButton = new JButton("Back");
-        styleButton(backButton, Color.decode("#2A5490"), Color.WHITE); // Sea Fun button
+        styleButton(backButton, Color.decode("#2A5490"), Color.WHITE);// Blue Button
         backButton.addActionListener(e -> repeat.showCard(parentPanel, "ManageEmps"));
         panel.add(backButton, BorderLayout.SOUTH);
 

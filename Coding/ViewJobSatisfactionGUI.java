@@ -97,7 +97,7 @@ public class ViewJobSatisfactionGUI
 
         panel.add(formPanel, BorderLayout.CENTER);
 
-        // Back button with Sea Fun theme
+        // Back button 
         backButton = new JButton("Back");
         backButton.setFont(font);
         backButton.setBackground(Color.decode("#2A5490"));

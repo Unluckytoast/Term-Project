@@ -27,12 +27,12 @@ public class UpdateFeedbackGUI
         // Title label
         titleLabel = new JLabel("Employee Feedback", SwingConstants.CENTER);
         titleLabel.setFont(repeat.getTitleFont());
-        titleLabel.setForeground(Color.decode("#2A5490"));  // Sea Fun text color
+        titleLabel.setForeground(Color.decode("#2A5490"));  
         panel.add(titleLabel, BorderLayout.NORTH);
 
         // Button panel
         buttonPanel = new JPanel(new GridBagLayout());
-        buttonPanel.setBackground(Color.WHITE);  // Sea Fun background
+        buttonPanel.setBackground(Color.WHITE); 
         GridBagConstraints gridBag = new GridBagConstraints();
         gridBag.insets = new Insets(10, 10, 10, 10);
 
@@ -63,7 +63,7 @@ public class UpdateFeedbackGUI
         backButton = new JButton("Back");
         backButton.setPreferredSize(new Dimension(100, 40)); // Adjust the back button size
         backButton.setFont(font);
-        backButton.setBackground(Color.decode("#2A5490"));  // Sea Fun button color
+        backButton.setBackground(Color.decode("#2A5490"));  
         backButton.setForeground(Color.WHITE);  // White text
         backButton.setFocusPainted(false);
         backButton.addActionListener(e -> repeat.showCard(parentPanel, "OpenScreen"));

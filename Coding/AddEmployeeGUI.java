@@ -407,7 +407,7 @@ public class AddEmployeeGUI
         //Creates the back button
         backButton = new JButton("Back");
         backButton.setFont(font);
-        backButton.setBackground(Color.decode("#2A5490"));  // Sea Fun button color
+        backButton.setBackground(Color.decode("#2A5490"));// Blue Background
         backButton.setForeground(Color.WHITE);  // White text
         backButton.setFocusPainted(false);
         backButton.addActionListener(e -> repeat.showCard(parentPanel, "ManageEmps"));
